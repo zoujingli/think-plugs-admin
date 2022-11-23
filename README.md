@@ -5,5 +5,5 @@
 
 #### 安装
 ```shell
-composer require zoujingli/think-plugs-admin
+composer require zoujingli/think-plugs-admin dev-master
 ```
