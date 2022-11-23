@@ -20,7 +20,7 @@
   "extra": {
     "think": {
       "services": [
-        "app\\admin\\Register"
+        "app\\admin\\Service"
       ]
     }
   }
