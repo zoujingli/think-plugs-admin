@@ -1,0 +1,27 @@
+{
+  "name": "zoujingli/think-plugs-admin",
+  "description": "基于 ThinkAdmin 的 Admin 模块",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Anyon",
+      "email": "zoujingli@qq.com"
+    }
+  ],
+  "require": {
+    "zoujingli/think-library": "6.0.x-dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "app\\admin\\": "src"
+    }
+  },
+  "extra": {
+    "think": {
+      "services": [
+        "app\\admin\\Register"
+      ]
+    }
+  }
+}
