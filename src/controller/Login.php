@@ -21,6 +21,7 @@ use think\admin\extend\CodeExtend;
 use think\admin\model\SystemUser;
 use think\admin\service\AdminService;
 use think\admin\service\CaptchaService;
+use think\admin\service\RuntimeService;
 use think\admin\service\SystemService;
 
 /**
@@ -44,10 +45,12 @@ class Login extends Controller
                 $this->redirect(sysuri('admin/index/index'));
             } else {
                 // 当前运行模式
-                $this->developMode = SystemService::checkRunMode();
+                $this->developMode = RuntimeService::check();
                 // 后台背景处理
-                $images = str2arr(sysconf('login_image') ?: '', '|') ?: [
-                    SystemService::uri('/static/theme/img/login/bg1.jpg'), SystemService::uri('/static/theme/img/login/bg2.jpg'),
+                $images = str2arr(sysconf('login_image') ?: '', '|');
+                if (empty($images)) $images = [
+                    SystemService::uri('/static/theme/img/login/bg1.jpg'),
+                    SystemService::uri('/static/theme/img/login/bg2.jpg'),
                 ];
                 $this->loginStyle = sprintf('style="background-image:url(%s)" data-bg-transition="%s"', $images[0], join(',', $images));
                 // 登录验证令牌
@@ -97,6 +100,8 @@ class Login extends Controller
                 'login_at' => date('Y-m-d H:i:s'),
                 'login_ip' => $this->app->request->ip(),
             ]);
+            // 刷新用户权限
+            AdminService::apply(true);
             sysoplog('系统用户登录', '登录系统后台成功');
             $this->success('登录成功', sysuri('admin/index/index'));
         }
@@ -125,7 +130,6 @@ class Login extends Controller
      */
     public function out()
     {
-        $this->app->session->clear();
         $this->app->session->destroy();
         $this->success('退出登录成功!', sysuri('admin/login/index'));
     }

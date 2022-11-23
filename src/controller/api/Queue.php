@@ -30,21 +30,6 @@ use think\exception\HttpResponseException;
 class Queue extends Controller
 {
     /**
-     * 任务进度查询
-     * @login true
-     * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function progress()
-    {
-        $input = $this->_vali(['code.require' => '任务编号不能为空！']);
-        $queue = QueueService::instance()->initialize($input['code']);
-        $this->success('获取任务进度成功！', $queue->progress());
-    }
-
-    /**
      * WIN停止监听进程
      * @login true
      */
@@ -63,6 +48,7 @@ class Queue extends Controller
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (Exception $exception) {
+            trace_file($exception);
             $this->error($exception->getMessage());
         }
     }
@@ -86,6 +72,7 @@ class Queue extends Controller
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (Exception $exception) {
+            trace_file($exception);
             $this->error($exception->getMessage());
         }
     }
@@ -108,5 +95,17 @@ class Queue extends Controller
         } else {
             echo "<span class='color-red pointer' data-tips-text='只有超级管理员才能操作！'>无权限</span>";
         }
+    }
+
+    /**
+     * 任务进度查询
+     * @login true
+     * @throws \think\admin\Exception
+     */
+    public function progress()
+    {
+        $input = $this->_vali(['code.require' => '任务编号不能为空！']);
+        $queue = QueueService::instance()->initialize($input['code']);
+        $this->success('获取任务进度成功！', $queue->progress());
     }
 }

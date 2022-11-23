@@ -19,7 +19,7 @@ namespace app\admin\controller\api;
 use think\admin\Controller;
 use think\admin\model\SystemConfig;
 use think\admin\service\AdminService;
-use think\admin\service\SystemService;
+use think\admin\service\RuntimeService;
 use think\exception\HttpResponseException;
 
 /**
@@ -37,13 +37,12 @@ class System extends Controller
     public function push()
     {
         if (AdminService::isSuper()) try {
-            AdminService::clearCache();
-            SystemService::pushRuntime();
-            sysoplog('系统运维管理', '刷新创建路由缓存');
+            RuntimeService::push() && sysoplog('系统运维管理', '刷新发布运行缓存');
             $this->success('网站缓存加速成功！', 'javascript:location.reload()');
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
+            trace_file($exception);
             $this->error($exception->getMessage());
         } else {
             $this->error('只有超级管理员才能操作！');
@@ -57,13 +56,12 @@ class System extends Controller
     public function clear()
     {
         if (AdminService::isSuper()) try {
-            AdminService::clearCache();
-            SystemService::clearRuntime();
-            sysoplog('系统运维管理', '清理网站日志缓存');
+            RuntimeService::clear() && sysoplog('系统运维管理', '清理网站日志缓存');
             $this->success('清空日志缓存成功！', 'javascript:location.reload()');
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
+            trace_file($exception);
             $this->error($exception->getMessage());
         } else {
             $this->error('只有超级管理员才能操作！');
@@ -77,11 +75,11 @@ class System extends Controller
     public function debug()
     {
         if (AdminService::isSuper()) if (input('state')) {
-            SystemService::setRuntime('product');
+            RuntimeService::set('product');
             sysoplog('系统运维管理', '开发模式切换为生产模式');
             $this->success('已切换为生产模式！', 'javascript:location.reload()');
         } else {
-            SystemService::setRuntime('debug');
+            RuntimeService::set('debug');
             sysoplog('系统运维管理', '生产模式切换为开发模式');
             $this->success('已切换为开发模式！', 'javascript:location.reload()');
         } else {
@@ -131,6 +129,7 @@ class System extends Controller
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
+            trace_file($exception);
             $this->error($exception->getMessage());
         } else {
             $this->error('只有超级管理员才能操作！');

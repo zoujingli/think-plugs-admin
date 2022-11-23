@@ -30,6 +30,21 @@ use think\admin\Storage;
 class File extends Controller
 {
     /**
+     * 存储类型
+     * @var array
+     */
+    protected $types;
+
+    /**
+     * 控制器初始化
+     * @return void
+     */
+    protected function initialize()
+    {
+        $this->types = Storage::types();
+    }
+
+    /**
      * 系统文件管理
      * @auth true
      * @menu true
@@ -39,7 +54,6 @@ class File extends Controller
      */
     public function index()
     {
-        $this->types = Storage::types();
         SystemFile::mQuery()->layTable(function () {
             $this->title = '系统文件管理';
             $this->xexts = SystemFile::mk()->distinct()->column('xext');
@@ -59,6 +73,16 @@ class File extends Controller
         foreach ($data as &$vo) {
             $vo['ctype'] = $this->types[$vo['type']] ?? $vo['type'];
         }
+    }
+
+    /**
+     * 编辑系统文件
+     * @auth true
+     * @return void
+     */
+    public function edit()
+    {
+        SystemFile::mForm('form');
     }
 
     /**
