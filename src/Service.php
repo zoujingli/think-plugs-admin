@@ -16,13 +16,14 @@ class Service extends \think\Service
     const VERSION = '0.0.1';
 
     /**
-     * 组件服务启动
+     * 配置组件服务
      * @return void
      */
     public function boot(): void
     {
+        $attr = explode('\\', __NAMESPACE__);
         $addons = $this->app->config->get('app.addons', []);
-        $addons['admin'] = __DIR__ . DIRECTORY_SEPARATOR;
+        $addons[array_pop($attr)] = __DIR__ . DIRECTORY_SEPARATOR . '@' . join('\\', $attr);
         $this->app->config->set(['addons' => $addons], 'app');
     }
 }
