@@ -1,7 +1,6 @@
 {
   "name": "zoujingli/think-plugs-admin",
   "description": "基于 ThinkAdmin 的 Admin 模块",
-  "minimum-stability": "stable",
   "license": "MIT",
   "authors": [
     {
