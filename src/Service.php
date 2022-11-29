@@ -10,8 +10,7 @@
 // | 开源协议 ( https://mit-license.org )
 // | 免费声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
-// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-admin
 // +----------------------------------------------------------------------
 
 namespace app\admin;
