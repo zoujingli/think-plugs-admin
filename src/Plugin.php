@@ -70,8 +70,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         // 注册指令并执行安装指令
         $dispatcher = $composer->getEventDispatcher();
         foreach (['service:discover', 'vendor:publish', 'xadmin:publish'] as $command) {
-            $dispatcher->addListener('post-thinkadmin-dump', "@php think {$command}");
+            $dispatcher->addListener('post-think-admin', "@php think {$command}");
         }
-        $dispatcher->dispatch('post-thinkadmin-dump');
+        $dispatcher->dispatch('post-think-admin');
     }
 }
