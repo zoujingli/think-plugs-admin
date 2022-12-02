@@ -69,6 +69,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             copy(dirname(__DIR__) . '/stc/sysroot/think', $file);
         }
 
+        // 初始化数据库配置文件，没有时候会报错，无法执行安装
+        if (!file_exists($file = "{$root}/config/database.php")) {
+            file_exists(dirname($file)) or mkdir(dirname($file), 0755, true);
+            copy(dirname(__DIR__) . '/stc/config/database.php', $file);
+        }
+
         // 初始化系统缓存配置文件，没有时候会报错，无法执行安装
         if (!file_exists($file = "{$root}/config/cache.php")) {
             file_exists(dirname($file)) or mkdir(dirname($file), 0755, true);
@@ -89,7 +95,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $dispatcher = $event->getComposer()->getEventDispatcher();
         $dispatcher->addListener('post-think-admin', '@php think service:discover');
         $dispatcher->addListener('post-think-admin', '@php think xadmin:publish');
-        $dispatcher->addListener('post-think-admin', '@php think migrate:run');
+        // $dispatcher->addListener('post-think-admin', '@php think migrate:run');
         $dispatcher->dispatch('post-think-admin');
     }
 }
