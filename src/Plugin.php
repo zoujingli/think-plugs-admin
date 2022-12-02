@@ -40,6 +40,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
     }
 
+    /**
+     * 注册订阅事件
+     * @return \array[][]
+     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -49,12 +53,16 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         ];
     }
 
+    /**
+     * PostAutoloadDump 事件处理
+     * @param \Composer\Script\Event $event
+     * @return void
+     */
     public function postAutoloadDump(Event $event)
     {
 
         // 获取当前环境变量
-        $composer = $event->getComposer();
-        $root = dirname($composer->getConfig()->get('vendor-dir'));
+        $root = dirname($event->getComposer()->getConfig()->get('vendor-dir'));
 
         // 初始化指令入口文件，方便后面执行安装指令
         if (!file_exists($file = "{$root}/think")) {
@@ -67,8 +75,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             copy(dirname(__DIR__) . '/stc/config/cache.php', $file);
         }
 
-        // 注册指令并执行安装指令
-        $dispatcher = $composer->getEventDispatcher();
+        // 注册初始化指令并执行安装相关指令
+        $dispatcher = $event->getComposer()->getEventDispatcher();
         $dispatcher->addListener('post-think-admin', '@php think service:discover');
         $dispatcher->addListener('post-think-admin', '@php think xadmin:publish');
         $dispatcher->dispatch('post-think-admin');
