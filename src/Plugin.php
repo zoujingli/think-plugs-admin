@@ -71,7 +71,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
 
         // 初始化系统配置文件 ( 没有时候会报错无法执行安装 )
-        ToolsExtend::copyfile(dirname(__DIR__) . '/stc/config', "{$root}/config");
+        ToolsExtend::copyfile(dirname(__DIR__) . '/stc/config', "{$root}/config", [], false, false);
 
         // 初始化应用入口应用
         if (!file_exists($file = "{$root}/app/index/controller/Index.php")) {
