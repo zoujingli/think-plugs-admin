@@ -18,7 +18,11 @@
     "composer/composer": "^1.0|^2.0"
   },
   "autoload": {
+    "psr-0": {
+      "": "../../extend"
+    },
     "psr-4": {
+      "app\\": "../../app",
       "app\\admin\\": "src"
     }
   },

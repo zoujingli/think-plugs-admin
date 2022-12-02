@@ -87,7 +87,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $dispatcher = $event->getComposer()->getEventDispatcher();
         $dispatcher->addListener('post-think-admin', '@php think service:discover');
         $dispatcher->addListener('post-think-admin', '@php think xadmin:publish');
-        // $dispatcher->addListener('post-think-admin', '@php think migrate:run');
         $dispatcher->dispatch('post-think-admin');
     }
 }
