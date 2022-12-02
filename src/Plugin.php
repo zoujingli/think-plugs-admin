@@ -33,6 +33,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function postAutoloadDump(Event $event)
     {
+        echo __METHOD__;
         $io = $event->getIO();
         $root = dirname($event->getComposer()->getConfig()->get('vendor-dir'));
         // 初始化指令入口文件
