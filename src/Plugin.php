@@ -71,14 +71,15 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         // 初始化系统缓存配置文件，没有时候会报错，无法执行安装
         if (!file_exists($file = "{$root}/config/cache.php")) {
-            file_exists(dirname($file)) or mkdir(dirname($file));
+            file_exists(dirname($file)) or mkdir(dirname($file), 0755, true);
             copy(dirname(__DIR__) . '/stc/config/cache.php', $file);
         }
 
         // 初始化应用入口应用
         if (!file_exists($file = $root . '/app/index/controller/Index.php')) {
-            (file_exists(dirname($file)) or mkdir(dirname($file))) && file_put_contents($file, '<?php'
-                . "\nnamespace app\index\controller;\n\nuse think\admin\Controller;"
+            file_exists(dirname($file)) or mkdir(dirname($file), 0755, true);
+            file_put_contents($file, '<?php'
+                . "\n\nnamespace app\index\controller;\n\nuse think\admin\Controller;"
                 . "\n\nclass Index extends \\think\\admin\\Controller {"
                 . "\n\tpublic function index() {\n\t\t\$this->redirect(sysuri('admin/login/index'));\n\t}"
                 . "\n}\n");
