@@ -20,6 +20,7 @@ use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
+use think\admin\extend\ToolsExtend;
 
 /**
  * Composer Plugin
@@ -69,17 +70,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             copy(dirname(__DIR__) . '/stc/sysroot/think', $file);
         }
 
-        // 初始化数据库配置文件，没有时候会报错，无法执行安装
-        if (!file_exists($file = "{$root}/config/database.php")) {
-            file_exists(dirname($file)) or mkdir(dirname($file), 0755, true);
-            copy(dirname(__DIR__) . '/stc/config/database.php', $file);
-        }
-
-        // 初始化系统缓存配置文件，没有时候会报错，无法执行安装
-        if (!file_exists($file = "{$root}/config/cache.php")) {
-            file_exists(dirname($file)) or mkdir(dirname($file), 0755, true);
-            copy(dirname(__DIR__) . '/stc/config/cache.php', $file);
-        }
+        // 初始化系统配置文件 ( 没有时候会报错无法执行安装 )
+        ToolsExtend::copyfile(dirname(__DIR__) . '/stc/config', "{$root}/config");
 
         // 初始化应用入口应用
         if (!file_exists($file = "{$root}/app/index/controller/Index.php")) {
