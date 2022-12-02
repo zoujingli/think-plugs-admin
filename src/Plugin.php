@@ -76,7 +76,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
 
         // 初始化应用入口应用
-        if (!file_exists($file = $root . '/app/index/controller/Index.php')) {
+        if (!file_exists($file = "{$root}/app/index/controller/Index.php")) {
             file_exists(dirname($file)) or mkdir(dirname($file), 0755, true);
             file_put_contents($file, '<?php'
                 . "\n\nnamespace app\index\controller;"
