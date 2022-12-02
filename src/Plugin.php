@@ -79,7 +79,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         if (!file_exists($file = $root . '/app/index/controller/Index.php')) {
             file_exists(dirname($file)) or mkdir(dirname($file), 0755, true);
             file_put_contents($file, '<?php'
-                . "\n\nnamespace app\index\controller;\n\nuse think\admin\Controller;"
+                . "\n\nnamespace app\index\controller;"
                 . "\n\nclass Index extends \\think\\admin\\Controller {"
                 . "\n\tpublic function index() {\n\t\t\$this->redirect(sysuri('admin/login/index'));\n\t}"
                 . "\n}\n");
