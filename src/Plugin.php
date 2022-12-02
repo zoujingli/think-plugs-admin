@@ -33,16 +33,20 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function postAutoloadDump(Event $event)
     {
+        $io = $event->getIO();
         $root = dirname($event->getComposer()->getConfig()->get('vendor-dir'));
         // 初始化指令入口文件
         if (!file_exists($file = "{$root}/think")) {
+            $io->info("初始化指令入口文件！");
             copy(__DIR__ . '/stubs/think.stub', $file);
         }
         // 初始化系统缓存配置文件
         if (!file_exists($file = "{$root}/config/cache.php")) {
+            $io->info("初始化插件缓存配置文件！");
             file_exists(dirname($file)) or mkdir(dirname($file));
             copy(__DIR__ . '/stubs/cache.stub', $file);
         }
+        $io->info("执行组件服务编制任务！");
         $event->getComposer()->getEventDispatcher()->dispatchScript('@php think vendor:publish');
     }
 }
