@@ -69,6 +69,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         // 执行应用插件安装指令
         foreach (['service:discover', 'vendor:publish', 'xadmin:publish'] as $command) {
+            print_r("> @php think {$command}" . PHP_EOL);
             $composer->getEventDispatcher()->dispatchScript("@php think {$command}");
         }
     }
