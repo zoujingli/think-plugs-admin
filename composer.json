@@ -1,7 +1,9 @@
 {
+  "type": "composer-plugin",
   "name": "zoujingli/think-plugs-admin",
-  "description": "基于 ThinkAdmin 的 Admin 模块",
   "license": "MIT",
+  "homepage": "https://thinkadmin.top",
+  "description": "基于 ThinkAdmin 的 Admin 模块",
   "authors": [
     {
       "name": "Anyon",
@@ -9,7 +11,11 @@
     }
   ],
   "require": {
+    "composer-plugin-api": "^1.0|^2.0",
     "zoujingli/think-library": "6.0.x-dev"
+  },
+  "require-dev": {
+    "composer/composer": "^1.0|^2.0"
   },
   "autoload": {
     "psr-4": {
@@ -17,6 +23,9 @@
     }
   },
   "extra": {
+    "class": [
+      "app\\admin\\Plugin"
+    ],
     "think": {
       "services": [
         "app\\admin\\Service"
