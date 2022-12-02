@@ -75,6 +75,15 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             copy(dirname(__DIR__) . '/stc/config/cache.php', $file);
         }
 
+        // 初始化应用入口应用
+        if (!file_exists($file = $root . '/app/index/controller/Index.php')) {
+            (file_exists(dirname($file)) or mkdir(dirname($file))) && file_put_contents($file, '<?php'
+                . "\nnamespace app\index\controller;\n\nuse think\admin\Controller;"
+                . "\n\nclass Index extends \\think\\admin\\Controller {"
+                . "\n\tpublic function index() {\n\t\t\$this->redirect(sysuri('admin/login/index'));\n\t}"
+                . "\n}\n");
+        }
+
         // 注册初始化指令并执行安装相关指令
         $dispatcher = $event->getComposer()->getEventDispatcher();
         $dispatcher->addListener('post-think-admin', '@php think service:discover');
