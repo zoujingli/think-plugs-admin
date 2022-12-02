@@ -36,12 +36,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $root = dirname($event->getComposer()->getConfig()->get('vendor-dir'));
         // 初始化指令入口文件
         if (!file_exists($file = "{$root}/think")) {
-            copy(__DIR__ . '/stubs/think.stub', $file);
+            copy(dirname(__DIR__) . '/stc/sysroot/think', $file);
         }
         // 初始化系统缓存配置文件
         if (!file_exists($file = "{$root}/config/cache.php")) {
             file_exists(dirname($file)) or mkdir(dirname($file));
-            copy(__DIR__ . '/stubs/cache.stub', $file);
+            copy(dirname(__DIR__) . '/stc/config/cache.php', $file);
         }
         $event->getComposer()->getEventDispatcher()->dispatchScript('@php think xadmin:publish');
     }
