@@ -68,6 +68,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
 
         // 执行应用插件安装指令
-        $composer->getEventDispatcher()->dispatchScript('@php think xadmin:publish');
+        foreach (['service:discover', 'vendor:publish', 'xadmin:publish'] as $command) {
+            $composer->getEventDispatcher()->dispatchScript("@php think {$command}");
+        }
     }
 }
