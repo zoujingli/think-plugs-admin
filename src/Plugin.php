@@ -67,10 +67,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             copy(dirname(__DIR__) . '/stc/config/cache.php', $file);
         }
 
-        // 执行应用插件安装指令
+        // 注册指令并执行安装指令
+        $dispatcher = $composer->getEventDispatcher();
         foreach (['service:discover', 'vendor:publish', 'xadmin:publish'] as $command) {
-            print_r("> @php think {$command}" . PHP_EOL);
-            $composer->getEventDispatcher()->dispatchScript("@php think {$command}");
+            $dispatcher->addListener('post-thinkadmin-dump', "@php think {$command}");
         }
+        $dispatcher->dispatch('post-thinkadmin-dump');
     }
 }
