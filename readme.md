@@ -11,7 +11,7 @@ composer require zoujingli/think-library v6.0.x-dev
 composer require zoujingli/think-plugs-admin dev-master
 ```
 
-#### 增量安装 ( 在 ThinkAdmin 根目录执行 )
+#### 增量安装 ( 项目根目录执行 )
 
 ```shell
 composer require zoujingli/think-plugs-admin dev-master
