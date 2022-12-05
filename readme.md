@@ -1,10 +1,8 @@
 # ThinkPlugsAdmin
 
+基于`ThinkAdmin`的`admin`模块。
+
 由于`layui-2.8`未正式发布，所以这里只用了`rc`版本，待其正式发布之后我们也会相应发布上线。
-
-#### 关于 ThinkPlugsAdmin 插件
-
-基于 ThinkAdmin 的 admin 模块
 
 #### 全新或增量安装 ( 空目录或项目根目录下执行 )
 
