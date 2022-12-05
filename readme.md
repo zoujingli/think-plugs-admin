@@ -1,6 +1,8 @@
 # ThinkPlugsAdmin
 
-#### 介绍
+由于`layui-2.8`未正式发布，所以这里只用了`rc`版本，待其正式发布之后我们也会相应发布上线。
+
+#### 关于 ThinkPlugsAdmin 插件
 
 基于 ThinkAdmin 的 admin 模块
 
@@ -10,7 +12,7 @@
 composer require zoujingli/think-plugs-admin dev-master
 ```
 
-#### 启动测试环境，再访问 http://127.0.0.1:8000
+#### 执行启动测试环境并访问 http://127.0.0.1:8000
 
 ```shell
 php think run --host 127.0.0.1
