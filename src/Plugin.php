@@ -88,12 +88,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function preAutoloadDump()
     {
         if ($this->type === 'project') {
-            // 注册自动加载机制
+
+            // 注册自动加载规格
             $auto = $this->composer->getPackage()->getAutoload();
             if (empty($auto)) $this->composer->getPackage()->setAutoload([
-                'psr-0' => ['' => 'extend'],
-                'psr-4' => ['app\\' => 'app'],
+                'psr-0' => ['' => 'extend'], 'psr-4' => ['app\\' => 'app'],
             ]);
+
             // 初始化指令入口文件，方便后面执行安装指令
             if (!file_exists($file = "{$this->root}/think")) {
                 copy(dirname(__DIR__) . '/stc/sysroot/think', $file);
