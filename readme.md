@@ -4,7 +4,7 @@
 
 基于 ThinkAdmin 的 admin 模块
 
-#### 全新安装 ( 空目录或项目根目录下执行 )
+#### 全新或增量安装 ( 空目录或项目根目录下执行 )
 
 ```shell
 composer require zoujingli/think-plugs-admin dev-master
