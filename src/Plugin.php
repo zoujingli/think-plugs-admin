@@ -50,11 +50,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         // 变量赋值
         $this->composer = $composer;
+        // 项目根目录
+        $this->root = dirname($composer->getConfig()->get('vendor-dir'));
         // 默认项目
         $json = json_decode(file_get_contents("{$this->root}/composer.json"), true);
         if (empty($json['type']) && empty($json['name'])) $this->type = 'project';
-        // 项目根目录
-        $this->root = dirname($composer->getConfig()->get('vendor-dir'));
     }
 
     public function deactivate(Composer $composer, IOInterface $io)
