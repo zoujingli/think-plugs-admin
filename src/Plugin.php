@@ -85,31 +85,15 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         ];
     }
 
-    /**
-     * preAutoloadDump 事件处理
-     * @return void
-     */
     public function preAutoloadDump()
     {
-        // 注册自动加载机制
         if ($this->type === 'project') {
+            // 注册自动加载机制
             $auto = $this->composer->getPackage()->getAutoload();
             if (empty($auto)) $this->composer->getPackage()->setAutoload([
                 'psr-0' => ['' => 'extend'],
                 'psr-4' => ['app\\' => 'app'],
             ]);
-        }
-    }
-
-    /**
-     * PostAutoloadDump 事件处理
-     * @return void
-     */
-    public function postAutoloadDump()
-    {
-        // 项目类型初始化安装
-        if ($this->type === 'project') {
-
             // 初始化指令入口文件，方便后面执行安装指令
             if (!file_exists($file = "{$this->root}/think")) {
                 copy(dirname(__DIR__) . '/stc/sysroot/think', $file);
@@ -127,11 +111,14 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                     . "\n}\n");
             }
 
-            // 注册初始化指令并执行安装相关指令
+            // 注册初始化指令并执行相关安装指令
             $dispatcher = $this->composer->getEventDispatcher();
-            $dispatcher->addListener('post-think-admin', '@php think service:discover');
-            $dispatcher->addListener('post-think-admin', '@php think xadmin:publish');
-            $dispatcher->dispatch('post-think-admin');
+            $dispatcher->addListener('post-autoload-dump', '@php think service:discover');
+            $dispatcher->addListener('post-autoload-dump', '@php think xadmin:publish');
         }
+    }
+
+    public function postAutoloadDump()
+    {
     }
 }
