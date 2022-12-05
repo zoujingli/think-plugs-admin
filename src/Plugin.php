@@ -54,7 +54,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->root = dirname($composer->getConfig()->get('vendor-dir'));
         // 默认项目
         $json = json_decode(file_get_contents("{$this->root}/composer.json"), true);
-        if (empty($json['type']) && empty($json['name'])) $this->type = 'project';
+        if (empty($json['type']) && empty($json['name'])) {
+            $this->type = 'project';
+        } else {
+            $this->type = $composer->getPackage()->getType();
+        }
     }
 
     public function deactivate(Composer $composer, IOInterface $io)
