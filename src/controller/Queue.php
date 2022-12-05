@@ -70,10 +70,10 @@ class Queue extends Controller
     {
         $result['extra'] = ['dos' => 0, 'pre' => 0, 'oks' => 0, 'ers' => 0];
         SystemQueue::mk()->field('status,count(1) count')->group('status')->select()->map(function ($item) use (&$result) {
-            if ($item['status'] === 1) $result['extra']['pre'] = $item['count'];
-            if ($item['status'] === 2) $result['extra']['dos'] = $item['count'];
-            if ($item['status'] === 3) $result['extra']['oks'] = $item['count'];
-            if ($item['status'] === 4) $result['extra']['ers'] = $item['count'];
+            if (intval($item['status']) === 1) $result['extra']['pre'] = $item['count'];
+            if (intval($item['status']) === 2) $result['extra']['dos'] = $item['count'];
+            if (intval($item['status']) === 3) $result['extra']['oks'] = $item['count'];
+            if (intval($item['status']) === 4) $result['extra']['ers'] = $item['count'];
         });
     }
 
