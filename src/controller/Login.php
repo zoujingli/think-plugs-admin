@@ -34,6 +34,7 @@ class Login extends Controller
 
     /**
      * 后台登录入口
+     * @return void
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -70,9 +71,9 @@ class Login extends Controller
         } else {
             $data = $this->_vali([
                 'username.require' => '登录账号不能为空!',
-                'username.min:4'   => '登录账号不能少于4位字符!',
+                'username.min:4'   => '账号不能少于4位字符!',
                 'password.require' => '登录密码不能为空!',
-                'password.min:4'   => '登录密码不能少于4位字符!',
+                'password.min:4'   => '密码不能少于4位字符!',
                 'verify.require'   => '图形验证码不能为空!',
                 'uniqid.require'   => '图形验证标识不能为空!',
             ]);
@@ -94,6 +95,7 @@ class Login extends Controller
                 $this->app->session->set('LoginInputSessionError', true);
                 $this->error('登录账号或密码错误，请重新输入!');
             }
+            $user->hidden(['sort', 'status', 'password', 'is_deleted']);
             $this->app->session->set('user', $user->toArray());
             $this->app->session->delete('LoginInputSessionError');
             $user->inc('login_num')->update([
@@ -109,12 +111,13 @@ class Login extends Controller
 
     /**
      * 生成验证码
+     * @return void
      */
     public function captcha()
     {
         $input = $this->_vali([
-            'type.require'  => '验证码类型不能为空!',
-            'token.require' => '验证码标识不能为空!',
+            'type.require'  => '类型不能为空!',
+            'token.require' => '标识不能为空!',
         ]);
         $image = CaptchaService::instance()->initialize();
         $captcha = ['image' => $image->getData(), 'uniqid' => $image->getUniqid()];
@@ -127,6 +130,7 @@ class Login extends Controller
 
     /**
      * 退出登录
+     * @return void
      */
     public function out()
     {
