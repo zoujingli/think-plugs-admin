@@ -32,7 +32,6 @@ class Plugin implements PluginInterface
     /**
      * @param \Composer\Composer $composer
      * @param \Composer\IO\IOInterface $io
-     * @return void
      * @throws \Seld\JsonLint\ParsingException
      */
     public function activate(Composer $composer, IOInterface $io)
