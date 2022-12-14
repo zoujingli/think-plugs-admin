@@ -37,7 +37,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function activate(Composer $composer, IOInterface $io)
     {
         $this->composer = $composer;
-        $manager = $composer->getRepositoryManager();
+        $manager = $this->composer->getRepositoryManager();
         $manager->prependRepository($manager->createRepository('composer', [
             'url' => CodeExtend::deSafe64('aHR0cHM6Ly9vcGVuLmN1Y2kuY2MvcGx1Z2lu'), "canonical" => false
         ]));
