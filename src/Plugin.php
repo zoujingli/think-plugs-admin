@@ -39,25 +39,25 @@ class Plugin implements PluginInterface
         // 检测配置状态
         $rootJson = (new JsonFile('composer.json'))->read();
         $pluginUrl = CodeExtend::deSafe64('aHR0cHM6Ly9vcGVuLmN1Y2kuY2MvcGx1Z2lu');
-        foreach ($rootJson['repositories'] ?? [] as $item) if (empty($pluginCenter) && isset($item['url'])) {
-            if (is_numeric(strpos($item['url'], $pluginUrl))) $pluginCenter = true;
-        }
+//      foreach ($rootJson['repositories'] ?? [] as $item) if (empty($pluginCenter) && isset($item['url'])) {
+//          if (is_numeric(strpos($item['url'], $pluginUrl))) $pluginCenter = true;
+//      }
 
         // 临时动态注册
-        if (empty($pluginCenter)) {
-            $manager = $composer->getRepositoryManager();
-            $manager->prependRepository($manager->createRepository('composer', ['url' => $pluginUrl, 'canonical' => false]));
-        }
+        $manager = $composer->getRepositoryManager();
+        $manager->prependRepository($manager->createRepository('composer', [
+            'url' => $pluginUrl, 'canonical' => false
+        ]));
 
         // 如果项目类型配置
         if ($composer->getPackage()->getType() === 'project' || empty($rootJson['type']) && empty($rootJson['name'])) {
 
             // 动态修改项目配置
-            if (empty($pluginCenter)) {
-                $composer->getConfig()->getConfigSource()->addRepository('plugins', [
-                    'url' => $pluginUrl, 'type' => 'composer', 'canonical' => false
-                ]);
-            }
+//          if (empty($pluginCenter)) {
+//              $composer->getConfig()->getConfigSource()->addRepository('plugins', [
+//                  'url' => $pluginUrl, 'type' => 'composer', 'canonical' => false
+//              ]);
+//          }
 
             // 注册自动加载规则
             $auto = $composer->getPackage()->getAutoload();
