@@ -82,13 +82,13 @@ class Plugin implements PluginInterface
             }
 
             // 自动注册执行指令
-            $dispatcher = $composer->getEventDispatcher();
-            $postScripts = $rootJson['scripts']['post-autoload-dump'] ?? [];
-            if (!in_array($script = '@php think service:discover', $postScripts)) {
-                $dispatcher->addListener('post-autoload-dump', $script);
+            $event = $composer->getEventDispatcher();
+            $scripts = (array)($rootJson['scripts']['post-autoload-dump'] ?? []);
+            if (!in_array($script = '@php think service:discover', $scripts)) {
+                $event->addListener('post-autoload-dump', $script);
             }
-            if (!in_array($script = '@php think xadmin:publish', $postScripts)) {
-                $dispatcher->addListener('post-autoload-dump', $script);
+            if (!in_array($script = '@php think xadmin:publish', $scripts)) {
+                $event->addListener('post-autoload-dump', $script);
             }
         }
     }
