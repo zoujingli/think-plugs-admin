@@ -16,79 +16,62 @@
 namespace app\admin;
 
 use Composer\Composer;
-use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use think\admin\extend\CodeExtend;
 use think\admin\extend\ToolsExtend;
 
 /**
- * ComposerPlugin
+ * 组件插件注册
  * Class Plugin
  * @package app\admin
  */
-class Plugin implements PluginInterface, EventSubscriberInterface
+class Plugin implements PluginInterface
 {
-    /**
-     * @var Composer
-     */
-    protected $composer;
-
     public function activate(Composer $composer, IOInterface $io)
     {
-        $this->composer = $composer;
-        $manager = $this->composer->getRepositoryManager();
-        $manager->prependRepository($manager->createRepository('composer', [
-            'url' => CodeExtend::deSafe64('aHR0cHM6Ly9vcGVuLmN1Y2kuY2MvcGx1Z2lu'), "canonical" => false
-        ]));
-    }
+        $rootPath = dirname($composer->getConfig()->get('vendor-dir'));
+        $rootJson = json_decode(file_get_contents("{$rootPath}/composer.json"), true);
 
-    public function deactivate(Composer $composer, IOInterface $io)
-    {
-    }
+        // 检测配置状态
+        $pluginUrl = CodeExtend::deSafe64('aHR0cHM6Ly9vcGVuLmN1Y2kuY2MvcGx1Z2lu');
+        foreach ($rootJson['repositories'] ?? [] as $item) if (empty($pluginCenter) && isset($item['url'])) {
+            if (is_numeric(strpos($item['url'], $pluginUrl))) $pluginCenter = true;
+        }
 
-    public function uninstall(Composer $composer, IOInterface $io)
-    {
-    }
+        // 临时动态注册
+        if (empty($pluginCenter)) {
+            $manager = $composer->getRepositoryManager();
+            $manager->prependRepository($manager->createRepository('composer', [
+                'url' => $pluginUrl, "canonical" => false
+            ]));
+        }
 
-    /**
-     * 注册订阅事件
-     * @return array[][]
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            'pre-autoload-dump' => [
-                ['onPreAutoloadDump', 0],
-            ]
-        ];
-    }
+        // 如果项目类型配置
+        if ($composer->getPackage()->getType() === 'project' || empty($rootJson['type']) && empty($rootJson['name'])) {
 
-    public function onPreAutoloadDump()
-    {
-        $type = $this->composer->getPackage()->getType();
-        $root = dirname($this->composer->getConfig()->get('vendor-dir'));
-        $json = json_decode(file_get_contents("{$root}/composer.json"), true);
-        if (empty($json['type']) && empty($json['name'])) $type = 'project';
-
-        if ($type === 'project') {
+            // 动态修改项目配置
+            if (empty($pluginCenter)) {
+                $rootJson['repositories'][] = ['url' => $pluginUrl, 'type' => 'composer', 'canonical' => false];
+                file_put_contents("{$rootPath}/composer.json", json_encode($rootJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            }
 
             // 注册自动加载规则
-            $auto = $this->composer->getPackage()->getAutoload();
-            if (empty($auto)) $this->composer->getPackage()->setAutoload([
+            $auto = $composer->getPackage()->getAutoload();
+            if (empty($auto)) $composer->getPackage()->setAutoload([
                 'psr-0' => ['' => 'extend'], 'psr-4' => ['app\\' => 'app'],
             ]);
 
             // 初始化指令入口 ( 后面需要执行安装指令 )
-            if (!file_exists($file = "{$root}/think")) {
+            if (!file_exists($file = "{$rootPath}/think")) {
                 copy(dirname(__DIR__) . '/stc/sysroot/think', $file);
             }
 
             // 初始化配置文件 ( 没有的时候会报错无法执行安装 )
-            ToolsExtend::copyfile(dirname(__DIR__) . '/stc/config', "{$root}/config", [], false, false);
+            ToolsExtend::copyfile(dirname(__DIR__) . '/stc/config', "{$rootPath}/config", [], false, false);
 
-            // 初始化应用入口
-            if (!file_exists($file = "{$root}/app/index/controller/Index.php")) {
+            // 初始化应用入口 （ 主要是用来跳转到后台管理入口 ）
+            if (!file_exists($file = "{$rootPath}/app/index/controller/Index.php")) {
                 if (file_exists(dirname($file)) or mkdir(dirname($file), 0755, true)) {
                     file_put_contents($file, '<?php'
                         . "\n\nnamespace app\index\controller;"
@@ -99,8 +82,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             }
 
             // 自动注册执行指令
-            $dispatcher = $this->composer->getEventDispatcher();
-            $postScripts = $json['scripts']['post-autoload-dump'] ?? [];
+            $dispatcher = $composer->getEventDispatcher();
+            $postScripts = $rootJson['scripts']['post-autoload-dump'] ?? [];
             if (!in_array($script = '@php think service:discover', $postScripts)) {
                 $dispatcher->addListener('post-autoload-dump', $script);
             }
@@ -108,5 +91,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                 $dispatcher->addListener('post-autoload-dump', $script);
             }
         }
+    }
+
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+    }
+
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
     }
 }
