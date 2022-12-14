@@ -53,15 +53,18 @@ class Plugin implements PluginInterface
         if ($composer->getPackage()->getType() === 'project' || empty($rootJson['type']) && empty($rootJson['name'])) {
 
             // 动态修改项目配置
-            $composer->getConfig()->getConfigSource()->addRepository('plugins', [
-                "url" => $pluginUrl, "type" => "composer", "canonical" => false
-            ]);
+            if (empty($pluginCenter)) {
+                $composer->getConfig()->getConfigSource()->addRepository('plugins', [
+                    "url" => $pluginUrl, "type" => "composer", "canonical" => false
+                ]);
+            }
 
             // 注册自动加载规则
             $auto = $composer->getPackage()->getAutoload();
             if (empty($auto)) $composer->getPackage()->setAutoload([
                 'psr-0' => ['' => 'extend'], 'psr-4' => ['app\\' => 'app'],
             ]);
+
 
             // 初始化指令入口 ( 后面需要执行安装指令 )
             if (!file_exists($file = "{$rootPath}/think")) {
