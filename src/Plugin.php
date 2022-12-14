@@ -1,7 +1,7 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Admin Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
@@ -19,17 +19,17 @@ use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
+use think\admin\extend\CodeExtend;
 use think\admin\extend\ToolsExtend;
 
 /**
- * Composer Plugin
+ * ComposerPlugin
  * Class Plugin
  * @package app\admin
  */
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
     /**
-     * 当前操作对象
      * @var Composer
      */
     protected $composer;
@@ -37,6 +37,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function activate(Composer $composer, IOInterface $io)
     {
         $this->composer = $composer;
+        $manager = $composer->getRepositoryManager();
+        $manager->prependRepository($manager->createRepository('composer', [
+            'url' => CodeExtend::deSafe64('aHR0cHM6Ly9vcGVuLmN1Y2kuY2MvcGx1Z2lu')
+        ]));
     }
 
     public function deactivate(Composer $composer, IOInterface $io)
