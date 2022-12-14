@@ -29,6 +29,11 @@ use think\admin\extend\ToolsExtend;
  */
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
+    public function __construct()
+    {
+        var_dump(__METHOD__);
+    }
+
     /**
      * @var Composer
      */
@@ -36,6 +41,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function activate(Composer $composer, IOInterface $io)
     {
+        var_dump(__METHOD__);
         $this->composer = $composer;
         $manager = $composer->getRepositoryManager();
         $manager->prependRepository($manager->createRepository('composer', [
@@ -45,10 +51,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function deactivate(Composer $composer, IOInterface $io)
     {
+        var_dump(__METHOD__);
     }
 
     public function uninstall(Composer $composer, IOInterface $io)
     {
+        var_dump(__METHOD__);
     }
 
     /**
@@ -69,6 +77,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function preAutoloadDump()
     {
+        var_dump(__METHOD__);
         $root = dirname($this->composer->getConfig()->get('vendor-dir'));
         $json = json_decode(file_get_contents("{$root}/composer.json"), true);
         if (empty($json['type']) && empty($json['name'])) {
@@ -116,5 +125,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function postAutoloadDump()
     {
+        var_dump(__METHOD__);
     }
 }
