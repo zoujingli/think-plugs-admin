@@ -53,7 +53,8 @@ class Plugin implements PluginInterface
             // 动态修改项目配置
             if (empty($pluginCenter)) {
                 $rootJson['repositories'][] = ['url' => $pluginUrl, 'type' => 'composer', 'canonical' => false];
-                file_put_contents("{$rootPath}/composer.json", json_encode($rootJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+                $content = json_encode($rootJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+                file_put_contents("{$rootPath}/composer.json", str_replace('    ', '  ', $content));
             }
 
             // 注册自动加载规则
