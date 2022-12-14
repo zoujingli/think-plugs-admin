@@ -39,7 +39,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->composer = $composer;
         $manager = $composer->getRepositoryManager();
         $manager->prependRepository($manager->createRepository('composer', [
-            'url' => CodeExtend::deSafe64('aHR0cHM6Ly9vcGVuLmN1Y2kuY2MvcGx1Z2lu')
+            'url' => CodeExtend::deSafe64('aHR0cHM6Ly9vcGVuLmN1Y2kuY2MvcGx1Z2lu'), "canonical" => false
         ]));
     }
 
