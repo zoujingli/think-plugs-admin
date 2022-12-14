@@ -17,6 +17,7 @@ namespace app\admin;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
+use Composer\Json\JsonFile;
 use Composer\Plugin\PluginInterface;
 use think\admin\extend\CodeExtend;
 use think\admin\extend\ToolsExtend;
@@ -28,34 +29,34 @@ use think\admin\extend\ToolsExtend;
  */
 class Plugin implements PluginInterface
 {
+    /**
+     * @param \Composer\Composer $composer
+     * @param \Composer\IO\IOInterface $io
+     * @return void
+     * @throws \Seld\JsonLint\ParsingException
+     */
     public function activate(Composer $composer, IOInterface $io)
     {
         $rootPath = dirname($composer->getConfig()->get('vendor-dir'));
-        $rootJson = json_decode(file_get_contents("{$rootPath}/composer.json"), true);
-
+        $rootJson = (new JsonFile("{$rootPath}/composer.json"))->read();
         // 检测配置状态
         $pluginUrl = CodeExtend::deSafe64('aHR0cHM6Ly9vcGVuLmN1Y2kuY2MvcGx1Z2lu');
         foreach ($rootJson['repositories'] ?? [] as $item) if (empty($pluginCenter) && isset($item['url'])) {
             if (is_numeric(strpos($item['url'], $pluginUrl))) $pluginCenter = true;
         }
-
         // 临时动态注册
         if (empty($pluginCenter)) {
             $manager = $composer->getRepositoryManager();
-            $manager->prependRepository($manager->createRepository('composer', [
-                'url' => $pluginUrl, "canonical" => false
-            ]));
+            $manager->prependRepository($manager->createRepository('composer', ['url' => $pluginUrl, "canonical" => false]));
         }
 
         // 如果项目类型配置
         if ($composer->getPackage()->getType() === 'project' || empty($rootJson['type']) && empty($rootJson['name'])) {
 
             // 动态修改项目配置
-            if (empty($pluginCenter)) {
-                $rootJson['repositories'][] = ['url' => $pluginUrl, 'type' => 'composer', 'canonical' => false];
-                $textJson = json_encode($rootJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-                file_put_contents("{$rootPath}/composer.json", str_replace('    ', '  ', $textJson));
-            }
+            $composer->getConfig()->getConfigSource()->addRepository('plugins', [
+                "url" => $pluginUrl, "type" => "composer", "canonical" => false
+            ]);
 
             // 注册自动加载规则
             $auto = $composer->getPackage()->getAutoload();
