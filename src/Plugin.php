@@ -29,11 +29,6 @@ use think\admin\extend\ToolsExtend;
  */
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
-    public function __construct()
-    {
-        var_dump(__METHOD__);
-    }
-
     /**
      * @var Composer
      */
@@ -41,7 +36,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function activate(Composer $composer, IOInterface $io)
     {
-        var_dump(__METHOD__);
         $this->composer = $composer;
         $manager = $composer->getRepositoryManager();
         $manager->prependRepository($manager->createRepository('composer', [
@@ -51,40 +45,31 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function deactivate(Composer $composer, IOInterface $io)
     {
-        var_dump(__METHOD__);
     }
 
     public function uninstall(Composer $composer, IOInterface $io)
     {
-        var_dump(__METHOD__);
     }
 
     /**
      * 注册订阅事件
-     * @return \array[][]
+     * @return array[][]
      */
     public static function getSubscribedEvents(): array
     {
         return [
-            'pre-autoload-dump'  => [
-                ['preAutoloadDump', 0],
-            ],
-            'post-autoload-dump' => [
-                ['postAutoloadDump', 0],
-            ],
+            'pre-autoload-dump' => [
+                ['onPreAutoloadDump', 0],
+            ]
         ];
     }
 
-    public function preAutoloadDump()
+    public function onPreAutoloadDump()
     {
-        var_dump(__METHOD__);
+        $type = $this->composer->getPackage()->getType();
         $root = dirname($this->composer->getConfig()->get('vendor-dir'));
         $json = json_decode(file_get_contents("{$root}/composer.json"), true);
-        if (empty($json['type']) && empty($json['name'])) {
-            $type = 'project';
-        } else {
-            $type = $this->composer->getPackage()->getType();
-        }
+        if (empty($json['type']) && empty($json['name'])) $type = 'project';
 
         if ($type === 'project') {
 
@@ -104,11 +89,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
             // 初始化应用入口
             if (!file_exists($file = "{$root}/app/index/controller/Index.php")) {
-                (file_exists(dirname($file)) or mkdir(dirname($file), 0755, true)) && file_put_contents($file, '<?php'
-                    . "\n\nnamespace app\index\controller;"
-                    . "\n\nclass Index extends \\think\\admin\\Controller\n{"
-                    . "\n\tpublic function index() {\n\t\t\$this->redirect(sysuri('admin/login/index'));\n\t}"
-                    . "\n}\n");
+                if (file_exists(dirname($file)) or mkdir(dirname($file), 0755, true)) {
+                    file_put_contents($file, '<?php'
+                        . "\n\nnamespace app\index\controller;"
+                        . "\n\nclass Index extends \\think\\admin\\Controller\n{"
+                        . "\n\tpublic function index() {\n\t\t\$this->redirect(sysuri('admin/login/index'));\n\t}"
+                        . "\n}\n");
+                }
             }
 
             // 自动注册执行指令
@@ -121,10 +108,5 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                 $dispatcher->addListener('post-autoload-dump', $script);
             }
         }
-    }
-
-    public function postAutoloadDump()
-    {
-        var_dump(__METHOD__);
     }
 }
