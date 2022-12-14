@@ -84,11 +84,8 @@ class Plugin implements PluginInterface
             // 自动注册执行指令
             $event = $composer->getEventDispatcher();
             $scripts = (array)($rootJson['scripts']['post-autoload-dump'] ?? []);
-            if (!in_array($script = '@php think service:discover', $scripts)) {
-                $event->addListener('post-autoload-dump', $script);
-            }
             if (!in_array($script = '@php think xadmin:publish', $scripts)) {
-                $event->addListener('post-autoload-dump', $script);
+                static::syncService() && $event->addListener('post-autoload-dump', $script);
             }
         }
     }
@@ -99,5 +96,23 @@ class Plugin implements PluginInterface
 
     public function uninstall(Composer $composer, IOInterface $io)
     {
+    }
+
+    /**
+     * 同步服务配置
+     * @return false|int
+     */
+    public static function syncService()
+    {
+        $services = [];
+        foreach (glob('vendor/*/*/composer.json') as $json) {
+            $package = json_decode(file_get_contents($json), true);
+            if (!empty($package['extra']['think']['services'])) {
+                $services = array_merge($services, (array)$package['extra']['think']['services']);
+            }
+        }
+        $header = '// Automatically Generated At:' . date('Y-m-d H:i:s') . PHP_EOL . 'declare (strict_types = 1);' . PHP_EOL;
+        $content = '<?php ' . PHP_EOL . $header . 'return ' . var_export($services, true) . ';';
+        return file_put_contents('vendor/services.php', $content);
     }
 }
