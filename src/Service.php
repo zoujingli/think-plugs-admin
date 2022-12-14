@@ -15,13 +15,11 @@
 
 namespace app\admin;
 
-use think\admin\service\PluginService;
-
 /**
- * 组件注册服务
+ * 插件服务注册
  * Class Service
  * @package app\admin
  */
-class Service extends PluginService
+class Service extends \think\admin\Plugin
 {
 }

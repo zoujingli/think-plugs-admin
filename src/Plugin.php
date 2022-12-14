@@ -85,7 +85,10 @@ class Plugin implements PluginInterface
             $event = $composer->getEventDispatcher();
             $scripts = (array)($rootJson['scripts']['post-autoload-dump'] ?? []);
             if (!in_array($script = '@php think xadmin:publish', $scripts)) {
-                static::syncService() && $event->addListener('post-autoload-dump', $script);
+                $event->addListener('post-autoload-dump', function () {
+                    static::syncService();
+                });
+                $event->addListener('post-autoload-dump', $script);
             }
         }
     }
@@ -111,7 +114,7 @@ class Plugin implements PluginInterface
                 $services = array_merge($services, (array)$package['extra']['think']['services']);
             }
         }
-        $header = '// Automatically Generated At:' . date('Y-m-d H:i:s') . PHP_EOL . 'declare (strict_types = 1);' . PHP_EOL;
+        $header = '// Automatically Generated At: ' . date('Y-m-d H:i:s') . PHP_EOL . 'declare (strict_types = 1);' . PHP_EOL;
         $content = '<?php ' . PHP_EOL . $header . 'return ' . var_export($services, true) . ';';
         return file_put_contents('vendor/services.php', $content);
     }
