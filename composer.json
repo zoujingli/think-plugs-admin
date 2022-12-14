@@ -26,7 +26,7 @@
   },
   "extra": {
     "class": [
-      "app\\admin\\Plugin"
+      "app\\admin\\Install"
     ],
     "think": {
       "services": [

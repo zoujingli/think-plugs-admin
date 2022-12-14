@@ -24,10 +24,10 @@ use think\admin\extend\ToolsExtend;
 
 /**
  * 组件插件注册
- * Class Plugin
+ * Class Install
  * @package app\admin
  */
-class Plugin implements PluginInterface
+class Install implements PluginInterface
 {
     /**
      * @param \Composer\Composer $composer
@@ -46,7 +46,7 @@ class Plugin implements PluginInterface
         // 临时动态注册
         $manager = $composer->getRepositoryManager();
         $manager->prependRepository($manager->createRepository('composer', [
-            'url' => $pluginUrl, 'canonical' => false
+            'url' => $pluginUrl, 'canonical' => false,
         ]));
 
         // 如果项目类型配置
