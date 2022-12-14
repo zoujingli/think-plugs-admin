@@ -36,9 +36,8 @@ class Plugin implements PluginInterface
      */
     public function activate(Composer $composer, IOInterface $io)
     {
-        $rootJson = (new JsonFile('composer.json'))->read();
-
         // 检测配置状态
+        $rootJson = (new JsonFile('composer.json'))->read();
         $pluginUrl = CodeExtend::deSafe64('aHR0cHM6Ly9vcGVuLmN1Y2kuY2MvcGx1Z2lu');
         foreach ($rootJson['repositories'] ?? [] as $item) if (empty($pluginCenter) && isset($item['url'])) {
             if (is_numeric(strpos($item['url'], $pluginUrl))) $pluginCenter = true;
