@@ -115,17 +115,20 @@ class Install implements PluginInterface
     public static function syncService(): array
     {
         [$scripts, $services] = [[], []];
-        foreach (glob('vendor/*/*/composer.json') as $json) {
-            $package = json_decode(file_get_contents($json), true);
-            if (!empty($package['extra']['plugin']['scrips'])) {
-                $scripts = array_merge($scripts, (array)$package['extra']['plugin']['scrips']);
-            }
-            if (!empty($package['extra']['think']['services'])) {
-                $services = array_merge($services, (array)$package['extra']['think']['services']);
+        if (file_exists($file = 'vendor/composer/installed.json')) {
+            $packages = json_decode(@file_get_contents($file), true);
+            if (isset($packages['packages'])) $packages = $packages['packages'];
+            foreach ($packages as $package) {
+                if (!empty($package['extra']['plugin']['scripts'])) {
+                    $scripts = array_merge($scripts, (array)$package['extra']['plugin']['scripts']);
+                }
+                if (!empty($package['extra']['think']['services'])) {
+                    $services = array_merge($services, (array)$package['extra']['think']['services']);
+                }
             }
         }
-        $header = '// Automatically Generated At: ' . date('Y-m-d H:i:s') . PHP_EOL . 'declare (strict_types = 1);' . PHP_EOL;
-        $content = '<?php ' . PHP_EOL . $header . 'return ' . var_export(array_unique($services), true) . ';';
+        $header = "// Automatically Generated At: " . date('Y-m-d H:i:s') . PHP_EOL . 'declare(strict_types=1);';
+        $content = '<?php' . PHP_EOL . $header . PHP_EOL . 'return ' . var_export(array_unique($services), true) . ';';
         return ['state' => file_put_contents('vendor/services.php', $content), 'scripts' => array_unique($scripts)];
     }
 }
