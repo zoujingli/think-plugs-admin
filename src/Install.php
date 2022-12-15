@@ -114,11 +114,12 @@ class Install implements PluginInterface
      */
     private static function _services(): array
     {
-        [$scripts, $services] = [[], []];
+        [$scripts, $services, $versions] = [[], [], []];
         if (file_exists($file = 'vendor/composer/installed.json')) {
             $packages = json_decode(@file_get_contents($file), true);
             if (isset($packages['packages'])) $packages = $packages['packages'];
             foreach ($packages as $package) {
+                $versions[$package['name']] = $package['version'];
                 if (!empty($package['extra']['plugin']['scripts'])) {
                     $scripts = array_merge($scripts, (array)$package['extra']['plugin']['scripts']);
                 }
@@ -127,8 +128,16 @@ class Install implements PluginInterface
                 }
             }
         }
+
+        // 写入服务配置
         $header = "// Automatically Generated At: " . date('Y-m-d H:i:s') . PHP_EOL . 'declare(strict_types=1);';
         $content = '<?php' . PHP_EOL . $header . PHP_EOL . 'return ' . var_export(array_unique($services), true) . ';';
-        return ['state' => file_put_contents('vendor/services.php', $content), 'scripts' => array_unique($scripts)];
+        file_put_contents('vendor/services.php', $content);
+
+        // 写入版本配置
+        $content = '<?php' . PHP_EOL . $header . PHP_EOL . 'return ' . var_export(array_unique($versions), true) . ';';
+        file_put_contents('vendor/versions.php', $content);
+
+        return ['state' => true, 'scripts' => array_unique($scripts)];
     }
 }
