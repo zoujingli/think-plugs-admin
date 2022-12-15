@@ -29,6 +29,7 @@ use think\admin\extend\ToolsExtend;
  */
 class Install implements PluginInterface
 {
+
     /**
      * @param \Composer\Composer $composer
      * @param \Composer\IO\IOInterface $io
@@ -39,10 +40,6 @@ class Install implements PluginInterface
         // 检测配置状态
         $rootJson = (new JsonFile('composer.json'))->read();
         $pluginUrl = CodeExtend::deSafe64('aHR0cHM6Ly9vcGVuLmN1Y2kuY2MvcGx1Z2lu');
-
-//      foreach ($rootJson['repositories'] ?? [] as $item) if (empty($pluginCenter) && isset($item['url'])) {
-//          if (is_numeric(strpos($item['url'], $pluginUrl))) $pluginCenter = true;
-//      }
 
         // 临时动态注册
         $manager = $composer->getRepositoryManager();
@@ -66,13 +63,11 @@ class Install implements PluginInterface
                 'psr-0' => ['' => 'extend'], 'psr-4' => ['app\\' => 'app'],
             ]);
 
-            // 初始化指令入口 ( 后面需要执行安装指令 )
-            if (!file_exists($file = 'think')) {
-                copy(dirname(__DIR__) . '/stc/sysroot/think', $file);
-            }
-
             // 初始化配置文件 ( 没有的时候会报错无法执行安装 )
             ToolsExtend::copyfile(dirname(__DIR__) . '/stc/config', 'config', [], false, false);
+
+            // 初始化指令入口 ( 后面需要执行安装指令 )
+            if (!file_exists($file = 'think')) copy(dirname(__DIR__) . '/stc/sysroot/think', $file);
 
             // 初始化应用入口 （ 主要是用来跳转到后台管理入口 ）
             if (!file_exists($file = 'app/index/controller/Index.php')) {
@@ -86,16 +81,16 @@ class Install implements PluginInterface
             $dispatcher->addListener('post-autoload-dump', function () use ($dispatcher) {
 
                 // 注册插件脚本
-                [$state, $scripts] = array_values(static::syncService());
+                $ignore = '--ignore-platform-req=publish';
+                [$state, $scripts] = array_values(static::_services());
                 if ($state && count($scripts) > 0) foreach ($scripts as $script) {
+                    if (is_numeric(stripos($script, 'composer'))) $script .= " {$ignore}";
                     $dispatcher->addListener('PluginScript', $script);
-                    if (empty($isComposer) && is_numeric(stripos($script, 'composer '))) {
-                        $isComposer = true;
-                    }
                 }
 
                 // 注册安装脚本
-                if (empty($isComposer)) {
+                global $argv;
+                if (!in_array($ignore, $argv)) {
                     $dispatcher->addListener('PluginScript', '@php think xadmin:publish');
                 }
 
@@ -117,7 +112,7 @@ class Install implements PluginInterface
      * 同步服务配置
      * @return false|int
      */
-    private static function syncService(): array
+    private static function _services(): array
     {
         [$scripts, $services] = [[], []];
         if (file_exists($file = 'vendor/composer/installed.json')) {
