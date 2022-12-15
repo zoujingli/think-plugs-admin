@@ -66,7 +66,6 @@ class Install implements PluginInterface
                 'psr-0' => ['' => 'extend'], 'psr-4' => ['app\\' => 'app'],
             ]);
 
-
             // 初始化指令入口 ( 后面需要执行安装指令 )
             if (!file_exists($file = 'think')) {
                 copy(dirname(__DIR__) . '/stc/sysroot/think', $file);
@@ -85,20 +84,24 @@ class Install implements PluginInterface
             // 注册插件安装脚本
             $dispatcher = $composer->getEventDispatcher();
             $dispatcher->addListener('post-autoload-dump', function () use ($dispatcher) {
-                [$state, $scripts] = array_values(static::syncService());
-                if ($state && count($scripts) > 0) {
-                    foreach ($scripts as $script) {
-                        $dispatcher->addListener('PluginScript', $script);
-                    }
-                    $dispatcher->dispatch('PluginScript');
-                }
-            });
 
-            // 自动注册后置安装脚本
-            $scripts = (array)($rootJson['scripts']['post-autoload-dump'] ?? []);
-            if (!in_array($script = '@php think xadmin:publish', $scripts)) {
-                $dispatcher->addListener('post-autoload-dump', $script);
-            }
+                // 注册插件脚本
+                [$state, $scripts] = array_values(static::syncService());
+                if ($state && count($scripts) > 0) foreach ($scripts as $script) {
+                    $dispatcher->addListener('PluginScript', $script);
+                    if (empty($isComposer) && is_numeric(stripos($script, 'composer '))) {
+                        $isComposer = true;
+                    }
+                }
+
+                // 注册安装脚本
+                if (empty($isComposer)) {
+                    $dispatcher->addListener('PluginScript', '@php think xadmin:publish');
+                }
+
+                // 执行插件脚本
+                $dispatcher->dispatch('PluginScript');
+            });
         }
     }
 
