@@ -39,6 +39,7 @@ class Install implements PluginInterface
         // 检测配置状态
         $rootJson = (new JsonFile('composer.json'))->read();
         $pluginUrl = CodeExtend::deSafe64('aHR0cHM6Ly9vcGVuLmN1Y2kuY2MvcGx1Z2lu');
+
 //      foreach ($rootJson['repositories'] ?? [] as $item) if (empty($pluginCenter) && isset($item['url'])) {
 //          if (is_numeric(strpos($item['url'], $pluginUrl))) $pluginCenter = true;
 //      }
@@ -81,21 +82,22 @@ class Install implements PluginInterface
                     . "\n\tpublic function index()\n\t{\n\t\t\$this->redirect(sysuri('admin/login/index'));\n\t}\n}\n");
             }
 
-            // 自动注册执行指令
-            $event = $composer->getEventDispatcher();
+            // 注册插件安装脚本
+            $dispatcher = $composer->getEventDispatcher();
+            $dispatcher->addListener('post-autoload-dump', function () use ($dispatcher) {
+                [$state, $scripts] = array_values(static::syncService());
+                if ($state && count($scripts) > 0) {
+                    foreach ($scripts as $script) {
+                        $dispatcher->addListener('PluginScript', $script);
+                    }
+                    $dispatcher->dispatch('PluginScript');
+                }
+            });
+
+            // 自动注册后置安装脚本
             $scripts = (array)($rootJson['scripts']['post-autoload-dump'] ?? []);
             if (!in_array($script = '@php think xadmin:publish', $scripts)) {
-                $event->addListener('post-autoload-dump', function () use ($composer) {
-                    [$state, $scripts] = array_values(static::syncService());
-                    if ($state && count($scripts) > 0) {
-                        $dispatcher = $composer->getEventDispatcher();
-                        foreach ($scripts as $script) {
-                            $dispatcher->addListener('PluginScript', $script);
-                        }
-                        $dispatcher->dispatch('PluginScript');
-                    }
-                });
-                $event->addListener('post-autoload-dump', $script);
+                $dispatcher->addListener('post-autoload-dump', $script);
             }
         }
     }
@@ -112,7 +114,7 @@ class Install implements PluginInterface
      * 同步服务配置
      * @return false|int
      */
-    public static function syncService(): array
+    private static function syncService(): array
     {
         [$scripts, $services] = [[], []];
         if (file_exists($file = 'vendor/composer/installed.json')) {
