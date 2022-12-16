@@ -22,4 +22,8 @@ namespace app\admin;
  */
 class Service extends \think\admin\Plugin
 {
+    public static function menu(): array
+    {
+        return [];
+    }
 }
