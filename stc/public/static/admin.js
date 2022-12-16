@@ -328,7 +328,7 @@ $(function () {
         this.href = function (url, elem) {
             this.isMenu = elem && elem.dataset.menuNode;
             if (this.isMenu) layui.sessionData('pages', null);
-            if (url !== '#') return location.hash = $.menu.parseUri(url, elem);
+            if (url !== '#') return url.indexOf('#') > 0 ? location.href = url : location.hash = $.menu.parseUri(url, elem);
             if (this.isMenu) return $('[data-menu-node^="' + elem.dataset.menuNode + '-"]:first').trigger('click');
         };
         /*! 加载 HTML 到 BODY 位置 */
