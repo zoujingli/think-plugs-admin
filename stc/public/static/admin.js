@@ -326,14 +326,14 @@ $(function () {
         };
         /*! 以 HASH 打开新网页 */
         this.href = function (url, elem, hash) {
-            this.isMenu = elem && elem.dataset.menuNode;
+            this.isMenu = !!(elem && elem.dataset.menuNode);
             if (this.isMenu) layui.sessionData('pages', null);
             if (typeof url !== 'string' || url === '#' || url === '') {
-                if (this.isMenu) $('[data-menu-node^="' + elem.dataset.menuNode + '-"]:first').trigger('click');
-            } else {
-                hash = hash || $.menu.parseUri(url, elem);
-                url.indexOf('#') > -1 ? location.href = url.split('#', 2)[0] + '#' + hash : location.hash = hash;
+                return this.isMenu && $('[data-menu-node^="' + elem.dataset.menuNode + '-"]:first').trigger('click');
             }
+            hash = hash || $.menu.parseUri(url, elem);
+            this.isRedirect = url.indexOf('#') > -1 && url.split('#', 2)[0] !== location.pathname;
+            this.isRedirect ? location.href = url.split('#', 2)[0] + '#' + hash : location.hash = hash;
         };
         /*! 加载 HTML 到 BODY 位置 */
         this.open = function (url, data, call, load, tips) {
