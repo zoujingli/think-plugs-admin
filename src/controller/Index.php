@@ -87,7 +87,7 @@ class Index extends Controller
     {
         $this->_applyFormToken();
         if (AdminService::getUserId() === intval($id)) {
-            SystemUser::mForm('admin@user/form', 'id', [], ['id' => $id]);
+            SystemUser::mForm('user/form', 'id', [], ['id' => $id]);
         } else {
             $this->error('只能修改自己的资料！');
         }
@@ -131,7 +131,7 @@ class Index extends Controller
         }
         if ($this->app->request->isGet()) {
             $this->verify = true;
-            SystemUser::mForm('admin@user/pass', 'id', [], ['id' => $id]);
+            SystemUser::mForm('user/pass', 'id', [], ['id' => $id]);
         } else {
             $data = $this->_vali([
                 'password.require'            => '登录密码不能为空！',
