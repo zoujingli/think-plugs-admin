@@ -16,8 +16,10 @@
 namespace app\admin;
 
 use Composer\Composer;
+use Composer\Installer\LibraryInstaller;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
+use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
 use think\admin\extend\CodeExtend;
 use think\admin\extend\ToolsExtend;
@@ -37,6 +39,19 @@ class Install implements PluginInterface
      */
     public function activate(Composer $composer, IOInterface $io)
     {
+        $composer->getInstallationManager()->addInstaller(new class($io, $composer) extends LibraryInstaller {
+            public function getInstallPath(PackageInterface $package)
+            {
+                if ($package->getPrettyName() !== 'zoujingli/think-plugs-admin') {
+                    return parent::getInstallPath($package);
+                }
+                if ($this->composer->getPackage()->getType() !== 'project') {
+                    return parent::getInstallPath($package);
+                }
+                return 'app/admin';
+            }
+        });
+
         // 检测配置状态
         $rootJson = (new JsonFile('composer.json'))->read();
         $pluginUrl = CodeExtend::deSafe64('aHR0cHM6Ly9vcGVuLmN1Y2kuY2MvcGx1Z2lu');
