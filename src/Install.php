@@ -79,7 +79,7 @@ class Install implements PluginInterface
 
                 // 注册插件脚本
                 [$state, $scripts] = array_values(static::toServices());
-                [$plugin, $ignore] = [false, '--ignore-platform-req=NotPublish'];
+                [$plugin, $ignore] = [false, '--ignore-platform-req=NotPluginPublish'];
                 if ($state && count($scripts) > 0) foreach ($scripts as $script) {
                     if (is_numeric(stripos($script, 'composer'))) $script .= " {$ignore}";
                     $plugin = true;
