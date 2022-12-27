@@ -16,10 +16,8 @@
 namespace app\admin;
 
 use Composer\Composer;
-use Composer\Installer\LibraryInstaller;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
-use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
 use think\admin\extend\CodeExtend;
 use think\admin\extend\ToolsExtend;
@@ -31,7 +29,6 @@ use think\admin\extend\ToolsExtend;
  */
 class Install implements PluginInterface
 {
-
     /**
      * @param \Composer\Composer $composer
      * @param \Composer\IO\IOInterface $io
@@ -39,24 +36,11 @@ class Install implements PluginInterface
      */
     public function activate(Composer $composer, IOInterface $io)
     {
-        $composer->getInstallationManager()->addInstaller(new class($io, $composer) extends LibraryInstaller {
-            public function getInstallPath(PackageInterface $package)
-            {
-                if ($package->getPrettyName() !== 'zoujingli/think-plugs-admin') {
-                    return parent::getInstallPath($package);
-                }
-                if ($this->composer->getPackage()->getType() !== 'project') {
-                    return parent::getInstallPath($package);
-                }
-                return 'app/admin';
-            }
-        });
-
         // 检测配置状态
         $rootJson = (new JsonFile('composer.json'))->read();
         $pluginUrl = CodeExtend::deSafe64('aHR0cHM6Ly9vcGVuLmN1Y2kuY2MvcGx1Z2lu');
 
-        // 临时动态注册
+        // 动态注册仓库源
         $manager = $composer->getRepositoryManager();
         $manager->prependRepository($manager->createRepository('composer', [
             'url' => $pluginUrl, 'canonical' => false,
@@ -91,26 +75,30 @@ class Install implements PluginInterface
                     . "\n\tpublic function index()\n\t{\n\t\t\$this->redirect(sysuri('admin/login/index'));\n\t}\n}\n");
             }
 
-            // 注册插件安装脚本
+            // 注册插件安装
             $dispatcher = $composer->getEventDispatcher();
             $dispatcher->addListener('post-autoload-dump', function () use ($dispatcher) {
 
                 // 注册插件脚本
-                $ignore = '--ignore-platform-req=publish';
                 [$state, $scripts] = array_values(static::_services());
+                [$plugin, $ignores] = [false, '--ignore-platform-req=NotPublish'];
                 if ($state && count($scripts) > 0) foreach ($scripts as $script) {
-                    if (is_numeric(stripos($script, 'composer'))) $script .= " {$ignore}";
+                    if (is_numeric(stripos($script, 'composer'))) $script .= " {$ignores}";
+                    $plugin = true;
                     $dispatcher->addListener('PluginScript', $script);
                 }
 
                 // 注册安装脚本
                 global $argv;
-                if (!in_array($ignore, $argv)) {
+                if (!in_array($ignores, $argv)) {
+                    $plugin = true;
                     $dispatcher->addListener('PluginScript', '@php think xadmin:publish');
                 }
 
                 // 执行插件脚本
-                $dispatcher->dispatch('PluginScript');
+                if ($plugin) {
+                    $dispatcher->dispatch('PluginScript');
+                }
             });
         }
     }
@@ -144,12 +132,12 @@ class Install implements PluginInterface
             }
         }
 
-        // 写入服务配置
+        // 动态配置服务
         $header = "// Automatically Generated At: " . date('Y-m-d H:i:s') . PHP_EOL . 'declare(strict_types=1);';
         $content = '<?php' . PHP_EOL . $header . PHP_EOL . 'return ' . var_export($services, true) . ';';
         file_put_contents('vendor/services.php', $content);
 
-        // 写入版本配置
+        // 组件安装记录
         $content = '<?php' . PHP_EOL . $header . PHP_EOL . 'return ' . var_export($versions, true) . ';';
         file_put_contents('vendor/versions.php', $content);
 
