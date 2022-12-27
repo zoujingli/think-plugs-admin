@@ -36,17 +36,14 @@ class Install implements PluginInterface
      */
     public function activate(Composer $composer, IOInterface $io)
     {
-        // 检测配置状态
-        $rootJson = (new JsonFile('composer.json'))->read();
-        $pluginUrl = CodeExtend::deSafe64('aHR0cHM6Ly9vcGVuLmN1Y2kuY2MvcGx1Z2lu');
-
         // 动态注册仓库源
         $manager = $composer->getRepositoryManager();
         $manager->prependRepository($manager->createRepository('composer', [
-            'url' => $pluginUrl, 'canonical' => false,
+            'url' => CodeExtend::deSafe64('aHR0cHM6Ly9vcGVuLmN1Y2kuY2MvcGx1Z2lu'), 'canonical' => false,
         ]));
 
         // 如果项目类型配置
+        $rootJson = (new JsonFile('composer.json'))->read();
         if ($composer->getPackage()->getType() === 'project' || empty($rootJson['type']) && empty($rootJson['name'])) {
 
             // 动态修改项目配置
@@ -62,16 +59,17 @@ class Install implements PluginInterface
                 'psr-0' => ['' => 'extend'], 'psr-4' => ['app\\' => 'app'],
             ]);
 
-            // 初始化配置文件 ( 没有的时候会报错无法执行安装 )
+            // 初始化配置文件 ( 无配置文件安装会报错 )
             ToolsExtend::copyfile(dirname(__DIR__) . '/stc/config', 'config', [], false, false);
 
             // 初始化指令入口 ( 后面需要执行安装指令 )
             if (!file_exists($file = 'think')) copy(dirname(__DIR__) . '/stc/sysroot/think', $file);
 
-            // 初始化应用入口 （ 主要是用来跳转到后台管理入口 ）
+            // 初始化应用入口（ 默认跳转到后台管理入口 ）
             if (!file_exists($file = 'app/index/controller/Index.php')) {
                 if (file_exists(dirname($file)) || mkdir(dirname($file), 0755, true)) file_put_contents($file,
-                    '<?php' . "\n\nnamespace app\index\controller;\n\nclass Index extends \\think\\admin\\Controller\n{"
+                    '<?php'
+                    . "\n\nnamespace app\index\controller;\n\nclass Index extends \\think\\admin\\Controller\n{"
                     . "\n\tpublic function index()\n\t{\n\t\t\$this->redirect(sysuri('admin/login/index'));\n\t}\n}\n");
             }
 
@@ -80,25 +78,23 @@ class Install implements PluginInterface
             $dispatcher->addListener('post-autoload-dump', function () use ($dispatcher) {
 
                 // 注册插件脚本
-                [$state, $scripts] = array_values(static::_services());
-                [$plugin, $ignores] = [false, '--ignore-platform-req=NotPublish'];
+                [$state, $scripts] = array_values(static::toServices());
+                [$plugin, $ignore] = [false, '--ignore-platform-req=NotPublish'];
                 if ($state && count($scripts) > 0) foreach ($scripts as $script) {
-                    if (is_numeric(stripos($script, 'composer'))) $script .= " {$ignores}";
+                    if (is_numeric(stripos($script, 'composer'))) $script .= " {$ignore}";
                     $plugin = true;
                     $dispatcher->addListener('PluginScript', $script);
                 }
 
                 // 注册安装脚本
                 global $argv;
-                if (!in_array($ignores, $argv)) {
+                if (!in_array($ignore, $argv)) {
                     $plugin = true;
                     $dispatcher->addListener('PluginScript', '@php think xadmin:publish');
                 }
 
                 // 执行插件脚本
-                if ($plugin) {
-                    $dispatcher->dispatch('PluginScript');
-                }
+                $plugin && $dispatcher->dispatch('PluginScript');
             });
         }
     }
@@ -115,13 +111,12 @@ class Install implements PluginInterface
      * 同步服务配置
      * @return false|int
      */
-    private static function _services(): array
+    private static function toServices(): array
     {
         [$scripts, $services, $versions] = [[], [], []];
         if (file_exists($file = 'vendor/composer/installed.json')) {
             $packages = json_decode(@file_get_contents($file), true);
-            if (isset($packages['packages'])) $packages = $packages['packages'];
-            foreach ($packages as $package) {
+            foreach ($packages['packages'] ?? $packages as $package) {
                 $versions[$package['name']] = $package['version'];
                 if (!empty($package['extra']['plugin']['scripts'])) {
                     $scripts = array_merge($scripts, (array)$package['extra']['plugin']['scripts']);
@@ -137,7 +132,7 @@ class Install implements PluginInterface
         $content = '<?php' . PHP_EOL . $header . PHP_EOL . 'return ' . var_export($services, true) . ';';
         file_put_contents('vendor/services.php', $content);
 
-        // 组件安装记录
+        // 组件安装信息
         $content = '<?php' . PHP_EOL . $header . PHP_EOL . 'return ' . var_export($versions, true) . ';';
         file_put_contents('vendor/versions.php', $content);
 
