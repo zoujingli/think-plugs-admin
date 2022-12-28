@@ -47,12 +47,19 @@ class Install implements PluginInterface
             {
                 echo __METHOD__ . PHP_EOL;
                 parent::install($repo, $package);
+                $this->copyfile();
             }
 
             public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
             {
                 echo __METHOD__ . PHP_EOL;
                 parent::update($repo, $initial, $target);
+                $this->copyfile();
+            }
+
+            private function copyfile()
+            {
+                echo __METHOD__ . PHP_EOL;
             }
         });
 
