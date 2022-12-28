@@ -87,8 +87,8 @@ class Install implements PluginInterface
             ]);
 
             // 初始化配置文件 ( 无配置文件安装会报错 )
-            ToolsExtend::copyfile(dirname(__DIR__) . '/stc/config', 'config', [], false, true);
-            ToolsExtend::copyfile(dirname(__DIR__) . '/stc/public', 'public', [], false, true);
+            ToolsExtend::copyfile(dirname(__DIR__) . '/stc/config', 'config', [], false, false);
+            ToolsExtend::copyfile(dirname(__DIR__) . '/stc/public', 'public', [], false, false);
 
             // 初始化指令入口 ( 后面需要执行安装指令 )
             if (!file_exists($file = 'think')) copy(dirname(__DIR__) . '/stc/sysroot/think', $file);
