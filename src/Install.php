@@ -61,11 +61,10 @@ class Install implements PluginInterface
             ]);
 
             // 初始化配置文件 ( 无配置文件安装会报错 )
-            ToolsExtend::copyfile(dirname(__DIR__) . '/stc/config', 'config', [], false, false);
-            ToolsExtend::copyfile(dirname(__DIR__) . '/stc/public', 'public', [], false, false);
-
-            // 初始化指令入口 ( 后面需要执行安装指令 )
-            if (!file_exists($file = 'think')) copy(dirname(__DIR__) . '/stc/sysroot/think', $file);
+            $source = dirname(__DIR__);
+            file_exists($file = 'think') || copy("{$source}/stc/think", $file);
+            ToolsExtend::copyfile("{$source}/stc/config", 'config', [], false, false);
+            ToolsExtend::copyfile("{$source}/stc/public", 'public', [], true, false);
 
             // 初始化应用入口（ 默认跳转到后台管理入口 ）
             if (!file_exists($file = 'app/index/controller/Index.php')) {
@@ -103,12 +102,10 @@ class Install implements PluginInterface
 
     public function deactivate(Composer $composer, IOInterface $io)
     {
-        echo __METHOD__ . PHP_EOL;
     }
 
     public function uninstall(Composer $composer, IOInterface $io)
     {
-        echo __METHOD__ . PHP_EOL;
     }
 
     /**
