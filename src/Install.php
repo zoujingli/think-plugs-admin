@@ -61,10 +61,10 @@ class Install implements PluginInterface
             ]);
 
             // 初始化配置文件 ( 无配置文件安装会报错 )
-            $source = dirname(__DIR__);
-            file_exists($file = 'think') || copy("{$source}/stc/think", $file);
-            ToolsExtend::copyfile("{$source}/stc/config", 'config', [], false, false);
-            ToolsExtend::copyfile("{$source}/stc/public", 'public', [], true, false);
+            $from = dirname(__DIR__);
+            file_exists($file = 'think') || copy("{$from}/stc/think", $file);
+            ToolsExtend::copyfile("{$from}/stc/public", 'public', [], true, false);
+            ToolsExtend::copyfile("{$from}/stc/config", 'config', [], false, false);
 
             // 初始化应用入口（ 默认跳转到后台管理入口 ）
             if (!file_exists($file = 'app/index/controller/Index.php')) {
@@ -83,19 +83,19 @@ class Install implements PluginInterface
                 [$state, $scripts] = array_values(static::toServices());
                 if ($state && count($scripts) > 0) foreach ($scripts as $script) {
                     if (is_numeric(stripos($script, 'composer'))) $script .= " {$ignore}";
-                    $plugin = true;
+                    $isPlugin = true;
                     $dispatcher->addListener('PluginScript', $script);
                 }
 
                 // 注册安装脚本
                 global $argv;
                 if (!in_array($ignore, $argv)) {
-                    $plugin = true;
+                    $isPlugin = true;
                     $dispatcher->addListener('PluginScript', '@php think xadmin:publish');
                 }
 
                 // 执行插件脚本
-                isset($plugin) && $dispatcher->dispatch('PluginScript');
+                isset($isPlugin) && $dispatcher->dispatch('PluginScript');
             });
         }
     }
