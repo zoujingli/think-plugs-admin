@@ -76,7 +76,7 @@ class Install implements PluginInterface
 
             // 注册插件安装
             $dispatcher = $composer->getEventDispatcher();
-            $dispatcher->addListener('post-autoload-dump', function () use ($dispatcher) {
+            $dispatcher->addListener('post-autoload-dump', function () use ($rootJson, $dispatcher) {
 
                 // 注册插件脚本
                 $ignore = '--ignore-platform-req=NotPluginPublish';
@@ -89,7 +89,8 @@ class Install implements PluginInterface
 
                 // 注册安装脚本
                 global $argv;
-                if (!in_array($ignore, $argv)) {
+                $scripts = $rootJson['scripts']['post-autoload-dump'] ?? [];
+                if (!in_array($ignore, $argv) && !in_array('@php think xadmin:publish', $scripts)) {
                     $isPlugin = true;
                     $dispatcher->addListener('PluginScript', '@php think xadmin:publish');
                 }
