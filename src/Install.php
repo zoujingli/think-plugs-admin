@@ -92,6 +92,7 @@ class Install implements PluginInterface
                 $scripts = $rootJson['scripts']['post-autoload-dump'] ?? [];
                 if (!in_array($ignore, $argv) && !in_array('@php think xadmin:publish', $scripts)) {
                     $isPlugin = true;
+                    echo '> @call 动态注册' . PHP_EOL;
                     $dispatcher->addListener('PluginScript', '@php think xadmin:publish');
                 }
 
@@ -130,7 +131,7 @@ class Install implements PluginInterface
         }
 
         // 动态配置服务
-        $header = "// Automatically Generated At: " . date('Y-m-d H:i:s') . PHP_EOL . 'declare(strict_types=1);';
+        $header = '// Automatically Generated At: ' . date('Y-m-d H:i:s') . PHP_EOL . 'declare(strict_types=1);';
         $content = '<?php' . PHP_EOL . $header . PHP_EOL . 'return ' . var_export($services, true) . ';';
         file_put_contents('vendor/services.php', $content);
 
