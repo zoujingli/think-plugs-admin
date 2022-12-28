@@ -47,7 +47,9 @@ class Install implements PluginInterface
             {
                 echo __METHOD__ . PHP_EOL;
                 parent::install($repo, $package);
-                $this->copyfile();
+                if ($this->composer->getPackage()->getType() === 'project' && $package->getInstallationSource() !== 'source') {
+                    $this->filesystem->copyThenRemove("{$this->getInstallPath($package)}/stc/public", 'public');
+                }
             }
 
             public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
