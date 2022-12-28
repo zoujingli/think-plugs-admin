@@ -16,9 +16,12 @@
 namespace app\admin;
 
 use Composer\Composer;
+use Composer\Installer\LibraryInstaller;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
+use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
+use Composer\Repository\InstalledRepositoryInterface;
 use think\admin\extend\CodeExtend;
 use think\admin\extend\ToolsExtend;
 
@@ -36,6 +39,23 @@ class Install implements PluginInterface
      */
     public function activate(Composer $composer, IOInterface $io)
     {
+
+        $manager = $composer->getInstallationManager();
+        $manager->addInstaller(new class($io, $composer) extends LibraryInstaller {
+
+            public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
+            {
+                echo __METHOD__ . PHP_EOL;
+                parent::install($repo, $package);
+            }
+
+            public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
+            {
+                echo __METHOD__ . PHP_EOL;
+                parent::update($repo, $initial, $target);
+            }
+        });
+
         // 动态注册仓库源
         $manager = $composer->getRepositoryManager();
         $manager->prependRepository($manager->createRepository('composer', [
