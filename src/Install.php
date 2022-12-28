@@ -92,7 +92,7 @@ class Install implements PluginInterface
                 $scripts = $rootJson['scripts']['post-autoload-dump'] ?? [];
                 if (!in_array($ignore, $argv) && !in_array('@php think xadmin:publish', $scripts)) {
                     $isPlugin = true;
-                    echo '> @call 动态注册' . PHP_EOL;
+                    echo '> @ 动态注册脚本安装' . PHP_EOL;
                     $dispatcher->addListener('PluginScript', '@php think xadmin:publish');
                 }
 
