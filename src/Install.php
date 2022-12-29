@@ -72,7 +72,7 @@ class Install implements PluginInterface
 
             // 初始化应用入口（ 默认跳转到后台管理入口 ）
             if (!file_exists($file = 'app/index/controller/Index.php')) {
-                if (file_exists(dirname($file)) || mkdir(dirname($file), 0755, true)) file_put_contents($file,
+                (file_exists(dirname($file)) || mkdir(dirname($file), 0755, true)) && file_put_contents($file,
                     '<?php' . "\n\nnamespace app\index\controller;\n\nclass Index extends \\think\\admin\\Controller\n{"
                     . "\n\tpublic function index()\n\t{\n\t\t\$this->redirect(sysuri('admin/login/index'));\n\t}\n}\n");
             }
