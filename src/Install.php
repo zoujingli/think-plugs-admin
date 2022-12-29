@@ -19,7 +19,6 @@ use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
 use Composer\Plugin\PluginInterface;
-use Composer\Util\Filesystem;
 use think\admin\extend\CodeExtend;
 use think\admin\extend\ToolsExtend;
 
@@ -62,18 +61,16 @@ class Install implements PluginInterface
             ]);
 
             // 初始化配置文件 ( 无配置文件安装会报错 )
-            [$stc, $filesystem] = [dirname(__DIR__) . '/stc', new Filesystem()];
-            file_exists($file = "{$stc}/think") && $filesystem->copyThenRemove($file, 'think');
-            file_exists($path = "{$stc}/public") && $filesystem->copyThenRemove($path, 'public');
-            if (file_exists($path = "{$stc}/config")) {
-                ToolsExtend::copyfile($path, 'config', [], false, false);
-                $filesystem->removeDirectory($path);
-            }
+            $from = dirname(__DIR__);
+            file_exists($file = 'think') || copy("{$from}/stc/think", $file);
+            ToolsExtend::copyfile("{$from}/stc/public", 'public', [], true, false);
+            ToolsExtend::copyfile("{$from}/stc/config", 'config', [], false, false);
 
             // 初始化应用入口（ 默认跳转到后台管理入口 ）
             if (!file_exists($file = 'app/index/controller/Index.php')) {
-                (file_exists(dirname($file)) || mkdir(dirname($file), 0755, true)) && file_put_contents($file,
-                    '<?php' . "\n\nnamespace app\index\controller;\n\nclass Index extends \\think\\admin\\Controller\n{"
+                if (file_exists(dirname($file)) || mkdir(dirname($file), 0755, true)) file_put_contents($file,
+                    '<?php'
+                    . "\n\nnamespace app\index\controller;\n\nclass Index extends \\think\\admin\\Controller\n{"
                     . "\n\tpublic function index()\n\t{\n\t\t\$this->redirect(sysuri('admin/login/index'));\n\t}\n}\n");
             }
 
