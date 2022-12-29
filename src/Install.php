@@ -63,7 +63,7 @@ class Install implements PluginInterface
 
             // 初始化配置文件 ( 无配置文件安装会报错 )
             $from = dirname(__DIR__);
-            (new Filesystem())->safeCopy("{$from}/stc/public", 'public');
+            (new Filesystem())->copy("{$from}/stc/public", 'public');
             file_exists($file = 'think') || copy("{$from}/stc/think", $file);
             ToolsExtend::copyfile("{$from}/stc/config", 'config', [], false, false);
 
