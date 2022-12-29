@@ -14,7 +14,7 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-namespace think;
+namespace think\admin;
 
 use think\admin\service\RuntimeService;
 
