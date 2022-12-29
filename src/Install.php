@@ -62,10 +62,13 @@ class Install implements PluginInterface
             ]);
 
             // 初始化配置文件 ( 无配置文件安装会报错 )
-            [$stc, $sys] = [dirname(__DIR__) . '/stc', new Filesystem()];
-            ToolsExtend::copyfile("{$stc}/config", 'config', [], false, false);
-            if (file_exists($file = "{$stc}/think")) $sys->copyThenRemove($file, 'think');
-            if (file_exists($path = "{$stc}/public")) $sys->copyThenRemove($path, 'public');
+            [$stc, $filesystem] = [dirname(__DIR__) . '/stc', new Filesystem()];
+            file_exists($file = "{$stc}/think") && $filesystem->copyThenRemove($file, 'think');
+            file_exists($path = "{$stc}/public") && $filesystem->copyThenRemove($path, 'public');
+            if (file_exists($path = "{$stc}/config")) {
+                ToolsExtend::copyfile($path, 'config', [], false, false);
+                $filesystem->removeDirectory($path);
+            }
 
             // 初始化应用入口（ 默认跳转到后台管理入口 ）
             if (!file_exists($file = 'app/index/controller/Index.php')) {
