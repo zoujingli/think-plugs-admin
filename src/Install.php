@@ -91,7 +91,7 @@ class Install implements PluginInterface
                     }
                     if (!empty($extra['plugin']['clear'])) {
                         $this->io->write("<info>Remove {$install}</info>");
-                        $this->filesystem->removeDirectoryPhp($install);
+                        $this->filesystem->removeDirectory($install);
                     }
                 }
             }
