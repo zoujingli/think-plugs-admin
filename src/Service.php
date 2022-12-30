@@ -15,12 +15,14 @@
 
 namespace app\admin;
 
+use think\admin\Plugin;
+
 /**
  * 插件服务注册
  * Class Service
  * @package app\admin
  */
-class Service extends \think\admin\Plugin
+class Service extends Plugin
 {
     protected $appCopy = 'app/admin';
 
