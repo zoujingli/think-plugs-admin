@@ -140,29 +140,29 @@ class Install implements PluginInterface
             }
 
             // 注册插件安装
-//            $dispatcher = $composer->getEventDispatcher();
-//            $dispatcher->addListener('post-autoload-dump', function () use ($rootJson, $dispatcher) {
-//
-//                // 注册插件脚本
-//                $ignore = '--ignore-platform-req=NotPluginPublish';
-//                [$state, $scripts] = array_values(static::toServices());
-//                if ($state && count($scripts) > 0) foreach ($scripts as $script) {
-//                    if (is_numeric(stripos($script, 'composer'))) $script .= " {$ignore}";
-//                    $isPlugin = true;
-//                    $dispatcher->addListener('PluginScript', $script);
-//                }
-//
-//                // 注册安装脚本
-//                global $argv;
-//                $scripts = $rootJson['scripts']['post-autoload-dump'] ?? [];
-//                if (!in_array($ignore, $argv) && !in_array('@php think xadmin:publish', $scripts)) {
-//                    $isPlugin = true;
-//                    $dispatcher->addListener('PluginScript', '@php think xadmin:publish');
-//                }
-//
-//                // 执行插件脚本
-//                isset($isPlugin) && $dispatcher->dispatch('PluginScript');
-//            });
+            $dispatcher = $composer->getEventDispatcher();
+            $dispatcher->addListener('post-autoload-dump', function () use ($rootJson, $dispatcher) {
+
+                // 注册插件脚本
+                $ignore = '--ignore-platform-req=CallNotPluginPublish';
+                [$state, $scripts] = array_values(static::toServices());
+                if ($state && count($scripts) > 0) foreach ($scripts as $script) {
+                    if (is_numeric(stripos($script, 'composer'))) $script .= " {$ignore}";
+                    $isPlugin = true;
+                    $dispatcher->addListener('PluginScript', $script);
+                }
+
+                // 注册安装脚本
+                global $argv;
+                $scripts = $rootJson['scripts']['post-autoload-dump'] ?? [];
+                if (!in_array($ignore, $argv) && !in_array('@php think xadmin:publish', $scripts)) {
+                    $isPlugin = true;
+                    $dispatcher->addListener('PluginScript', '@php think xadmin:publish');
+                }
+
+                // 执行插件脚本
+                isset($isPlugin) && $dispatcher->dispatch('PluginScript');
+            });
         }
     }
 
