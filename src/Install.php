@@ -73,6 +73,7 @@ class Install implements PluginInterface
                         foreach ((array)$extra['plugin']['copy'] as $source => $target) {
                             $this->io->write("<info>Copy {$source} to {$target}</info>");
                             if (file_exists($file = $install . DIRECTORY_SEPARATOR . $source)) {
+                                file_exists(dirname($file)) || mkdir(dirname($file), 0755, true);
                                 $this->filesystem->copy($file, $target);
                             }
                         }
@@ -83,6 +84,7 @@ class Install implements PluginInterface
                             if (file_exists($target) && is_file($target)) {
                                 $this->io->write("<info>Init File {$target} exist!</info>");
                             } elseif (file_exists($file = $install . DIRECTORY_SEPARATOR . $source)) {
+                                file_exists(dirname($file)) || mkdir(dirname($file), 0755, true);
                                 $this->filesystem->copy($file, $target);
                             }
                         }
