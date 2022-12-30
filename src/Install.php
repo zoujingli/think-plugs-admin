@@ -38,6 +38,7 @@ class Install implements PluginInterface
      */
     public function activate(Composer $composer, IOInterface $io)
     {
+        // 动态注册安装器
         $composer->getInstallationManager()->addInstaller(new class($io, $composer) extends LibraryInstaller {
 
             public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
