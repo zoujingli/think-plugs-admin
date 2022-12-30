@@ -14,7 +14,7 @@
     "ext-json": "*",
     "topthink/think-view": "^1.0",
     "zoujingli/think-library": "^6.0|v6.0.x-dev",
-    "zoujingli/think-plugs-installer": "^1.0"
+    "zoujingli/think-plugs-installer": "^1.0|dev-master"
   },
   "autoload": {
     "psr-4": {
