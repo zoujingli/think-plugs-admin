@@ -38,8 +38,7 @@ class Install implements PluginInterface
      */
     public function activate(Composer $composer, IOInterface $io)
     {
-        $manager = $composer->getInstallationManager();
-        $manager->addInstaller(new class($io, $composer) extends LibraryInstaller {
+        $composer->getInstallationManager()->addInstaller(new class($io, $composer) extends LibraryInstaller {
 
             public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
             {
@@ -124,14 +123,6 @@ class Install implements PluginInterface
             if (empty($auto)) $composer->getPackage()->setAutoload([
                 'psr-0' => ['' => 'extend'], 'psr-4' => ['app\\' => 'app'],
             ]);
-
-            // 初始化应用入口（ 默认跳转到后台管理入口 ）
-            if (!file_exists($file = 'app/index/controller/Index.php')) {
-                if (file_exists(dirname($file)) || mkdir(dirname($file), 0755, true)) file_put_contents($file,
-                    '<?php'
-                    . "\n\nnamespace app\index\controller;\n\nclass Index extends \\think\\admin\\Controller\n{"
-                    . "\n\tpublic function index()\n\t{\n\t\t\$this->redirect(sysuri('admin/login/index'));\n\t}\n}\n");
-            }
 
             // 注册插件安装
             $dispatcher = $composer->getEventDispatcher();
