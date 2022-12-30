@@ -22,6 +22,8 @@ namespace app\admin;
  */
 class Service extends \think\admin\Plugin
 {
+    protected $copyPath = 'app/admin';
+
     public static function menu(): array
     {
         return [];
