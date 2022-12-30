@@ -28,5 +28,10 @@
         "app\\admin\\Service"
       ]
     }
+  },
+  "config": {
+    "allow-plugins": {
+      "zoujingli/think-plugs-installer": true
+    }
   }
 }
