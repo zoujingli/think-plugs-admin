@@ -85,7 +85,7 @@ class Install implements PluginInterface
                                 $this->io->write("<info>Init File {$target} exist!</info>");
                             } elseif (file_exists($file = $install . DIRECTORY_SEPARATOR . $source)) {
                                 file_exists(dirname($file)) || mkdir(dirname($file), 0755, true);
-                                $this->filesystem->copy($file, $target);
+                                copy($file, $target);
                             }
                         }
                     }
