@@ -1,5 +1,5 @@
 {
-  "type": "composer-plugin",
+  "type": "think-admin-plugin",
   "name": "zoujingli/think-plugs-admin",
   "license": "MIT",
   "homepage": "https://thinkadmin.top",
@@ -12,12 +12,9 @@
   ],
   "require": {
     "ext-json": "*",
-    "composer-plugin-api": "^2.0",
     "topthink/think-view": "^1.0",
-    "zoujingli/think-library": "^6.0|v6.0.x-dev"
-  },
-  "require-dev": {
-    "composer/composer": "^1.0|^2.0"
+    "zoujingli/think-library": "^6.0|v6.0.x-dev",
+    "zoujingli/think-plugs-installer": "^1.0"
   },
   "autoload": {
     "psr-4": {
@@ -25,9 +22,6 @@
     }
   },
   "extra": {
-    "class": [
-      "app\\admin\\Install"
-    ],
     "think": {
       "services": [
         "app\\admin\\Service"
