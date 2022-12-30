@@ -23,7 +23,6 @@ use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Repository\InstalledRepositoryInterface;
 use think\admin\extend\CodeExtend;
-use think\admin\extend\ToolsExtend;
 
 /**
  * 组件插件注册
@@ -125,10 +124,10 @@ class Install implements PluginInterface
             ]);
 
             // 初始化配置文件 ( 无配置文件安装会报错 )
-            $from = dirname(__DIR__);
-            file_exists($file = 'think') || copy("{$from}/stc/think", $file);
-            //ToolsExtend::copyfile("{$from}/stc/public", 'public', [], true, false);
-            ToolsExtend::copyfile("{$from}/stc/config", 'config', [], false, false);
+//            $from = dirname(__DIR__);
+//            file_exists($file = 'think') || copy("{$from}/stc/think", $file);
+//            //ToolsExtend::copyfile("{$from}/stc/public", 'public', [], true, false);
+//            ToolsExtend::copyfile("{$from}/stc/config", 'config', [], false, false);
 
             // 初始化应用入口（ 默认跳转到后台管理入口 ）
             if (!file_exists($file = 'app/index/controller/Index.php')) {
