@@ -71,7 +71,7 @@ class Install implements PluginInterface
                     $install = $this->getInstallPath($package);
                     if (!empty($extra['plugin']['copy'])) {
                         foreach ((array)$extra['plugin']['copy'] as $source => $target) {
-                            $this->io->write("<info>Copy {$source} to {$target}</info>");
+                            $this->io->write("<info>Copy Path {$source} to {$target}</info>");
                             if (file_exists($file = $install . DIRECTORY_SEPARATOR . $source)) {
                                 file_exists(dirname($target)) || mkdir(dirname($target), 0755, true);
                                 $this->filesystem->copy($file, $target);
