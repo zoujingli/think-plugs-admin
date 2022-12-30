@@ -16,9 +16,12 @@
 namespace app\admin;
 
 use Composer\Composer;
+use Composer\Installer\LibraryInstaller;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
+use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
+use Composer\Repository\InstalledRepositoryInterface;
 use think\admin\extend\CodeExtend;
 use think\admin\extend\ToolsExtend;
 
@@ -36,6 +39,67 @@ class Install implements PluginInterface
      */
     public function activate(Composer $composer, IOInterface $io)
     {
+        $manager = $composer->getInstallationManager();
+        $manager->addInstaller(new class($io, $composer) extends LibraryInstaller {
+
+            public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
+            {
+                parent::install($repo, $package);
+                $this->copyStaticFiles($package);
+            }
+
+            public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
+            {
+                parent::update($repo, $initial, $target);
+                $this->copyStaticFiles($target);
+            }
+
+            public function getInstallPath(PackageInterface $package): string
+            {
+                if ($this->composer->getPackage()->getType() === 'project') {
+                    $extra = $package->getExtra();
+                    if (!empty($extra['plugin']['path'])) {
+                        return $extra['plugin']['path'];
+                    }
+                }
+                return parent::getInstallPath($package);
+            }
+
+            protected function copyStaticFiles(PackageInterface $package)
+            {
+                if ($this->composer->getPackage()->getType() === 'project') {
+                    $extra = $package->getExtra();
+                    $install = $this->getInstallPath($package);
+                    if (!empty($extra['plugin']['copy'])) {
+                        foreach ((array)$extra['plugin']['copy'] as $source => $target) {
+                            $this->io->write("<info>Copy {$source} to {$target}</info>");
+                            if (file_exists($file = $install . DIRECTORY_SEPARATOR . $source)) {
+                                $this->filesystem->copy($file, $target);
+                            }
+                        }
+                    }
+                    if (!empty($extra['plugin']['init'])) {
+                        foreach ((array)$extra['plugin']['init'] as $source => $target) {
+                            $this->io->write("<info>Init File {$source} to {$target}</info>");
+                            if (file_exists($target) && is_file($target)) {
+                                $this->io->write("<info>Init File {$target} exist!</info>");
+                            } elseif (file_exists($file = $install . DIRECTORY_SEPARATOR . $source)) {
+                                $this->filesystem->copy($file, $target);
+                            }
+                        }
+                    }
+                    if (!empty($extra['plugin']['clear'])) {
+                        $this->io->write("<info>Remove {$install}</info>");
+                        $this->filesystem->removeDirectoryPhp($install);
+                    }
+                }
+            }
+
+            public function supports(string $packageType): bool
+            {
+                return 'think-admin-plugin' === $packageType;
+            }
+        });
 
         // 动态注册仓库源
         $manager = $composer->getRepositoryManager();
