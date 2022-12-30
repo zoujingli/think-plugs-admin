@@ -13,6 +13,7 @@
   "require": {
     "ext-json": "*",
     "topthink/think-view": "^1.0",
+    "zoujingli/ip2region": "^2.0",
     "zoujingli/think-library": "^6.0|v6.0.x-dev",
     "zoujingli/think-plugs-static": "^1.0|dev-master",
     "zoujingli/think-plugs-installer": "^1.0|dev-master"
