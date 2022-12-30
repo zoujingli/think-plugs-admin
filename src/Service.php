@@ -22,7 +22,7 @@ namespace app\admin;
  */
 class Service extends \think\admin\Plugin
 {
-    protected $copyPath = 'app/admin';
+    protected $appCopy = 'app/admin';
 
     public static function menu(): array
     {
