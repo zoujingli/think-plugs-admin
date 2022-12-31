@@ -27,12 +27,11 @@
     "plugin": {
       "copy": {
         "src": "app/admin",
-        "stc/database": "app/admin/database"
+        "stc/database": "database/migrations"
       },
       "remove": [
         "src",
-        "stc",
-        "readme.md"
+        "stc"
       ]
     },
     "think": {
