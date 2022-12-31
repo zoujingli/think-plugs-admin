@@ -27,7 +27,7 @@
     "plugin": {
       "path": "vendor/zoujingli/think-plugs-info-admin",
       "copy": {
-        "src": "app/admin",
+        "src": "!app/admin",
         "stc/database": "database/migrations"
       },
       "remove": [
