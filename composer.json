@@ -25,11 +25,17 @@
   },
   "extra": {
     "plugin": {
-      "path": "runtime/plugin/admin",
-      "move": {
+      "path": "vendor/zoujingli/plugin-info-admin",
+      "copy": {
         "src": "app/admin",
         "stc/database": "app/admin/database"
-      }
+      },
+      "remove": [
+        "src",
+        "stc",
+        "readme.md",
+        ".gitignore"
+      ]
     },
     "think": {
       "services": [
