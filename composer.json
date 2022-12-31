@@ -29,8 +29,7 @@
       "copy": {
         "src": "app/admin",
         "stc/database": "app/admin/database"
-      },
-      "clear": true
+      }
     },
     "think": {
       "services": [
