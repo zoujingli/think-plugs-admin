@@ -25,8 +25,8 @@
   },
   "extra": {
     "plugin": {
-      "path": "runtime/plugin-admin",
-      "copy": {
+      "path": "runtime/plugin/admin",
+      "move": {
         "src": "app/admin",
         "stc/database": "app/admin/database"
       }
