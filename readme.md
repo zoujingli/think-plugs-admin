@@ -6,7 +6,7 @@
 
 由于`layui 2.8`未正式发布，所以这里只用了`rc`版本，待其正式发布之后我们也会相应发布上线。
 
-#### 全新或更新安装 ( 空目录或项目根目录下执行 )
+#### 全新或更新安装
 
 ```shell
 composer require zoujingli/think-plugs-admin

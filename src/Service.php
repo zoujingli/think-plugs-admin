@@ -24,8 +24,22 @@ use think\admin\Plugin;
  */
 class Service extends Plugin
 {
+    /**
+     * 定义资源目录
+     * @var string
+     */
     protected $appCopy = 'app/admin';
 
+    /**
+     * 定义安装包名称
+     * @var string
+     */
+    protected $package = 'zoujingli/think-plugs-admin';
+
+    /**
+     * 定义插件中心菜单
+     * @return array
+     */
     public static function menu(): array
     {
         return [];
