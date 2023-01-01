@@ -21,15 +21,11 @@
   },
   "extra": {
     "plugin": {
-      "path": "vendor/zoujingli/think-plugs-info-admin",
       "copy": {
         "src": "!app/admin",
         "stc/database": "database/migrations"
       },
-      "remove": [
-        "src",
-        "stc"
-      ]
+      "clear": true
     },
     "think": {
       "services": [
