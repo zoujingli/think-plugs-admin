@@ -3,7 +3,7 @@
   "name": "zoujingli/think-plugs-admin",
   "license": "MIT",
   "homepage": "https://thinkadmin.top",
-  "description": "基于 ThinkAdmin 的 Admin 模块",
+  "description": "Admin Plugin for ThinkAdmin",
   "authors": [
     {
       "name": "Anyon",
