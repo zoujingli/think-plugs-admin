@@ -93,7 +93,7 @@ class InstallAdminData extends Migrator
                     ],
                 ],
             ],
-        ], ['node' => 'admin/config/index']);
+        ], ['url' => 'admin/config/index']);
     }
 
     /**
