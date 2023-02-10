@@ -6,10 +6,18 @@
 
 安装时会占用并替换`app/admin`目录 ( 强制先删再写 )，因此需要注意是否有对`app/admin`的文件进行修改，若有修改时我们不建议安装此模块，否则会造成修改的内容丢失！
 
-#### 全新或更新安装
+#### 安装插件
 
 ```shell
 composer require zoujingli/think-plugs-admin
+```
+
+#### 卸载插件
+
+```shell
+# 插件卸载不会删除数据表和 app/admin 的代码
+# 插件卸载后通过 composer update 时不会再更新
+composer remove zoujingli/think-plugs-admin
 ```
 
 #### 启动测试环境并访问 http://127.0.0.1:8000
