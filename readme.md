@@ -1,4 +1,4 @@
-# ThinkPlugsAdmin
+# ThinkPlugsAdmin for ThinkAdmin
 
 [![Latest Stable Version](https://poser.pugx.org/zoujingli/think-plugs-admin/v/stable)](https://packagist.org/packages/zoujingli/think-plugs-admin)
 [![Latest Unstable Version](https://poser.pugx.org/zoujingli/think-plugs-admin/v/unstable)](https://packagist.org/packages/zoujingli/think-plugs-admin)
