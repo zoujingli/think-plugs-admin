@@ -46,16 +46,16 @@ composer remove zoujingli/think-plugs-admin
 
 本插件涉及数据表有：
 
-* `system_auth`
-* `system_auth_node`
-* `system_base`
-* `system_config`
-* `system_data`
-* `system_file`
-* `system_menu`
-* `system_oplog`
-* `system_queue`
-* `system_user`
+* `system_auth` 系统-权限
+* `system_auth_node` 系统-授权
+* `system_base` 系统-字典
+* `system_config` 系统-配置
+* `system_data` 系统-数据
+* `system_file` 系统-文件
+* `system_menu` 系统-菜单
+* `system_oplog` 系统-日志
+* `system_queue` 系统-任务
+* `system_user` 系统-用户
 
 ### 版权说明
 
