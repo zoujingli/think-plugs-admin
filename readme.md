@@ -10,11 +10,11 @@
 
 代码主仓库放在`Gitee`，`Github`仅为镜像仓库用于发布`Composer`包。
 
-安装此插件会占用并替换`app/admin`目录 ( 先删再写 )，若有对`app/admin`有修改不建议安装此插件，否则会造成修改的内容丢失！
+安装此插件会占用并替换 `app/admin` 目录 ( 先删再写 )，若有对 `app/admin` 有修改不建议安装此插件，否则会造成修改的内容丢失！
 
-使用`Composer`卸载此插件时，不会删除`app/admin`目录和对应数据表，需要手动删除目录和数据表。
+使用 `Composer` 卸载此插件时，不会删除 `app/admin` 目录和对应数据表，需要手动删除目录和数据表。
 
-如果不希望自有的`app/admin`目录被更新替换，可以在`app/admin`目录下创建`ignore`文本文件 (`app/admin/ignore`)，文件没有后缀哦。
+如果不希望自有的 `app/admin` 目录被更新替换，可以在 `app/admin` 目录下创建 `ignore` 文件（ 即 `app/admin/ignore`，注意文件没有后缀哦！）。
 
 ### 安装插件
 
