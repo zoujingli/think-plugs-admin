@@ -14,7 +14,7 @@
 
 使用`Composer`卸载此插件时，不会删除`app/admin`目录和对应数据表，需要手动删除目录和数据表。
 
-如果不希望自有的`app/admin`目录不被更新替换，可以在`app/admin`目录下创建`ignore`文本文件 (`app/admin/ignore`)，文件没有后缀哦。
+如果不希望自有的`app/admin`目录被更新替换，可以在`app/admin`目录下创建`ignore`文本文件 (`app/admin/ignore`)，文件没有后缀哦。
 
 ### 安装插件
 
