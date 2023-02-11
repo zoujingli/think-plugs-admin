@@ -11,7 +11,7 @@
 
 安装此插件会占用并替换`app/admin`目录 ( 先删再写 )，若有对`app/admin`有修改不建议安装此插件，否则会造成修改的内容丢失！
 
-使用`Composer`卸载此插件时，不会删除`app/admin`目录，需要手动删除目录和数据表。
+使用`Composer`卸载此插件时，不会删除`app/admin`目录和对应数据表，需要手动删除目录和数据表。
 
 如果不希望自有的`app/admin`目录不被更新替换，可以在`app/admin`目录下创建`ignore`文本文件 (`app/admin/ignore`)，文件没有后缀哦。
 
@@ -25,7 +25,7 @@ composer require zoujingli/think-plugs-admin
 
 ```shell
 # 插件卸载不会删除数据表和 app/admin 的代码
-# 插件卸载后通过 composer update 时不会再更新
+# 卸载后通过 composer update 时不会再更新，其他依赖除外
 composer remove zoujingli/think-plugs-admin
 ```
 
@@ -46,16 +46,16 @@ composer remove zoujingli/think-plugs-admin
 
 本插件涉及数据表有：
 
-* `system_auth` 系统-权限
-* `system_auth_node` 系统-授权
-* `system_base` 系统-字典
-* `system_config` 系统-配置
-* `system_data` 系统-数据
-* `system_file` 系统-文件
-* `system_menu` 系统-菜单
-* `system_oplog` 系统-日志
-* `system_queue` 系统-任务
-* `system_user` 系统-用户
+* 系统-权限：`system_auth`
+* 系统-授权：`system_auth_node`
+* 系统-字典：`system_base`
+* 系统-配置：`system_config`
+* 系统-数据：`system_data`
+* 系统-文件：`system_file`
+* 系统-菜单：`system_menu`
+* 系统-日志：`system_oplog`
+* 系统-任务：`system_queue`
+* 系统-用户：`system_user`
 
 ### 版权说明
 
