@@ -14,20 +14,20 @@
 
 使用 `Composer` 卸载此插件时，不会删除 `app/admin` 目录和对应数据表，需要手动删除目录和数据表。
 
-如果不希望自有的 `app/admin` 目录被更新替换，可以在 `app/admin` 目录下创建 `ignore` 文件（ 即 `app/admin/ignore`，注意文件名没有后缀哦！），即使执行了插件安装或更新都会忽略更新替换。
+如果不希望自有的 `app/admin` 目录被更新替换，可以在 `app/admin` 目录下创建 `ignore` 文件（ 如 `app/admin/ignore`，注意文件名没有后缀哦！），即使执行了插件安装或更新都会忽略更新替换。
 
 ### 安装插件
 
 ```shell
-# 注意，插件仅支持在 ThinkAdmin v6 系统中使用
+### 注意，插件仅支持在 ThinkAdmin v6 中使用
 composer require zoujingli/think-plugs-admin
 ```
 
 ### 卸载插件
 
 ```shell
-# 插件卸载不会删除数据表和 app/admin 的代码
-# 卸载后通过 composer update 时不会再更新，其他依赖除外
+### 插件卸载不会删除数据表和 app/admin 的代码
+### 卸载后通过 composer update 时不会再更新，其他依赖除外
 composer remove zoujingli/think-plugs-admin
 ```
 
@@ -61,7 +61,7 @@ composer remove zoujingli/think-plugs-admin
 
 ### 版权说明
 
-**ThinkPlugsAdmin** 遵循`MIT`开源协议发布，并免费提供使用。
+**ThinkPlugsAdmin** 遵循 **MIT** 开源协议发布，并免费提供使用。
 
 本项目包含的第三方源码和二进制文件的版权信息将另行标注，请在对应文件查看。
 
