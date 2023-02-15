@@ -52,6 +52,7 @@ class User extends Controller
 
             // 关联用户身份资料
             $query->with(['userinfo' => function ($relation) {
+                /** @var \think\model\Relation|\think\db\Query $relation */
                 $relation->field('code,name,content');
             }]);
 
