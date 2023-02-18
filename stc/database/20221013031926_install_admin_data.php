@@ -20,6 +20,9 @@ use think\admin\model\SystemConfig;
 use think\admin\model\SystemUser;
 use think\migration\Migrator;
 
+@set_time_limit(0);
+@ini_set('memory_limit', -1);
+
 /**
  * 系统模块初始化
  */
@@ -32,9 +35,6 @@ class InstallAdminData extends Migrator
      */
     public function change()
     {
-        set_time_limit(0);
-        @ini_set('memory_limit', -1);
-
         $this->insertUser();
         $this->insertMenu();
         $this->insertConf();

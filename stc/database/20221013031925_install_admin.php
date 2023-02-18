@@ -16,6 +16,9 @@
 
 use think\migration\Migrator;
 
+@set_time_limit(0);
+@ini_set('memory_limit', -1);
+
 /**
  * 系统模块数据
  */
@@ -23,9 +26,6 @@ class InstallAdmin extends Migrator
 {
     public function change()
     {
-        set_time_limit(0);
-        @ini_set('memory_limit', -1);
-
         $this->_create_system_auth();
         $this->_create_system_auth_node();
         $this->_create_system_base();
