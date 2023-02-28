@@ -5,7 +5,7 @@
 [![Total Downloads](https://poser.pugx.org/zoujingli/think-plugs-admin/downloads)](https://packagist.org/packages/zoujingli/think-plugs-admin)
 [![Monthly Downloads](https://poser.pugx.org/zoujingli/think-plugs-admin/d/monthly)](https://packagist.org/packages/zoujingli/think-plugs-admin)
 [![Daily Downloads](https://poser.pugx.org/zoujingli/think-plugs-admin/d/daily)](https://packagist.org/packages/zoujingli/think-plugs-admin)
-[![PHP Version](https://img.shields.io/badge/php-%3E%3D7.1-8892BF.svg)](http://www.php.net)
+[![PHP Version Require](http://poser.pugx.org/zoujingli/think-plugs-admin/require/php)](https://packagist.org/packages/zoujingli/think-plugs-admin)
 [![License](https://poser.pugx.org/zoujingli/think-plugs-admin/license)](https://packagist.org/packages/zoujingli/think-plugs-admin)
 
 **ThinkAdmin** 核心插件，后台基础管理模块，开源免费可商用！
