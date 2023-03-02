@@ -18,6 +18,7 @@ namespace app\admin\controller\api;
 
 use think\admin\Controller;
 use think\admin\service\AdminService;
+use think\Response;
 
 /**
  * 通用插件管理
@@ -45,7 +46,7 @@ class Plugs extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function script(): \think\Response
+    public function script(): Response
     {
         return response(join("\r\n", [
             sprintf("window.taDebug = %s;", $this->app->isDebug() ? 'true' : 'false'),
