@@ -48,10 +48,7 @@ class InstallAdminData extends Migrator
     private function insertUser()
     {
         // 检查是否存在
-        $map = ['username' => 'admin'];
-        if (SystemUser::mk()->where($map)->count() > 0) {
-            return;
-        }
+        if (SystemUser::mk()->count() > 0) return;
 
         // 初始化默认数据
         SystemUser::mk()->save([
