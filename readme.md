@@ -25,7 +25,7 @@
 composer update --optimize-autoloader
 
 ### 注意，插件仅支持在 ThinkAdmin v6.1 中使用
-composer require zoujingli/think-plugs-admin
+composer require zoujingli/think-plugs-admin --optimize-autoloader
 ```
 
 ### 卸载插件
