@@ -169,18 +169,15 @@ class Upload extends Controller
      */
     public function file()
     {
-        if (!($file = $this->getFile())->isValid()) {
-            $this->error('文件上传异常，文件过大或未上传！');
-        }
-        $safeMode = $this->getSafe();
+        $file = $this->getFile();
         $extension = strtolower($file->getOriginalExtension());
-        $saveName = input('key') ?: Storage::name($file->getPathname(), $extension, '', 'md5_file');
+        $saveFileName = input('key') ?: Storage::name($file->getPathname(), $extension, '', 'md5_file');
         // 检查文件名称是否合法
-        if (strpos($saveName, '../') !== false) {
+        if (strpos($saveFileName, '../') !== false) {
             $this->error('文件路径不能出现跳级操作！');
         }
         // 检查文件后缀是否被恶意修改
-        if (strtolower(pathinfo(parse_url($saveName, PHP_URL_PATH), PATHINFO_EXTENSION)) !== $extension) {
+        if (strtolower(pathinfo(parse_url($saveFileName, PHP_URL_PATH), PATHINFO_EXTENSION)) !== $extension) {
             $this->error('文件后缀异常，请重新上传文件！');
         }
         // 屏蔽禁止上传指定后缀的文件
@@ -191,26 +188,27 @@ class Upload extends Controller
             $this->error('文件安全保护，禁止上传可执行文件！');
         }
         try {
-            if ($this->getType() === 'local') {
+            $safeMode = $this->getSafe();
+            if (($type = $this->getType()) === 'local') {
                 $local = LocalStorage::instance();
-                $distName = $local->path($saveName, $safeMode);
+                $distName = $local->path($saveFileName, $safeMode);
                 $file->move(dirname($distName), basename($distName));
-                $info = $local->info($saveName, $safeMode, $file->getOriginalName());
+                $info = $local->info($saveFileName, $safeMode, $file->getOriginalName());
                 if (in_array($extension, ['jpg', 'gif', 'png', 'bmp', 'jpeg', 'wbmp'])) {
-                    if ($this->imgNotSafe($distName) && $local->del($saveName)) {
+                    if ($this->imgNotSafe($distName) && $local->del($saveFileName)) {
                         $this->error('图片未通过安全检查！');
                     }
                     [$width, $height] = getimagesize($distName);
-                    if (($width < 1 || $height < 1) && $local->del($saveName)) {
+                    if (($width < 1 || $height < 1) && $local->del($saveFileName)) {
                         $this->error('读取图片的尺寸失败！');
                     }
                 }
             } else {
                 $bina = file_get_contents($file->getPathname());
-                $info = Storage::instance($this->getType())->set($saveName, $bina, $safeMode, $file->getOriginalName());
+                $info = Storage::instance($type)->set($saveFileName, $bina, $safeMode, $file->getOriginalName());
             }
             if (isset($info['url'])) {
-                $this->success('文件上传成功！', ['url' => $safeMode ? $saveName : $info['url']]);
+                $this->success('文件上传成功！', ['url' => $safeMode ? $saveFileName : $info['url']]);
             } else {
                 $this->error('文件处理失败，请稍候再试！');
             }
