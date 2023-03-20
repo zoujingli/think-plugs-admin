@@ -192,7 +192,12 @@ class Upload extends Controller
             if (($type = $this->getType()) === 'local') {
                 $local = LocalStorage::instance();
                 $distName = $local->path($saveFileName, $safeMode);
-                $file->move(dirname($distName), basename($distName));
+                if (PHP_SAPI === 'cli') {
+                    is_dir(dirname($distName)) || mkdir(dirname($distName), 0755, true);
+                    rename($file->getPathname(), $distName);
+                } else {
+                    $file->move(dirname($distName), basename($distName));
+                }
                 $info = $local->info($saveFileName, $safeMode, $file->getOriginalName());
                 if (in_array($extension, ['jpg', 'gif', 'png', 'bmp', 'jpeg', 'wbmp'])) {
                     if ($this->imgNotSafe($distName) && $local->del($saveFileName)) {
