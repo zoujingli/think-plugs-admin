@@ -193,7 +193,7 @@ class Upload extends Controller
                 $local = LocalStorage::instance();
                 $distName = $local->path($saveFileName, $safeMode);
                 if (PHP_SAPI === 'cli') {
-                    is_dir(dirname($distName)) || mkdir(dirname($distName), 0755, true);
+                    is_dir(dirname($distName)) || mkdir(dirname($distName), 0777, true);
                     rename($file->getPathname(), $distName);
                 } else {
                     $file->move(dirname($distName), basename($distName));
