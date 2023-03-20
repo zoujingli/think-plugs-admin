@@ -3,11 +3,11 @@
 {block name="button"}
 <!--{if isset($super) and $super}-->
 <a data-table-id="QueueTable" class="layui-btn layui-btn-sm layui-btn-primary" data-queue="{:url('admin/api.plugs/optimize')}">优化数据库</a>
-<!--{/if}-->
 
-<!--{if isset($super) and $super and $iswin}-->
+<!--{if isset($iswin) and ($iswin or php_sapi_name() eq 'cli')}-->
 <button data-load='{:url("admin/api.queue/start")}' class='layui-btn layui-btn-sm layui-btn-primary'>开启服务</button>
 <button data-load='{:url("admin/api.queue/stop")}' class='layui-btn layui-btn-sm layui-btn-primary'>关闭服务</button>
+<!--{/if}-->
 <!--{/if}-->
 
 <!--{if auth("clean")}-->
