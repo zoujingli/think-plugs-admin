@@ -21,7 +21,7 @@ use think\admin\service\AdminService;
 use think\Response;
 
 /**
- * 通用插件管理
+ * 扩展插件管理
  * Class Plugs
  * @package app\admin\controller\api
  */
@@ -65,7 +65,7 @@ class Plugs extends Controller
             sysoplog('系统运维管理', '创建数据库优化任务');
             $this->_queue('优化数据库所有数据表', 'xadmin:database optimize');
         } else {
-            $this->error('只有超级管理员才能操作！');
+            $this->error('请使用超管账号操作！');
         }
     }
 }
