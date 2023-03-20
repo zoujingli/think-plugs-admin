@@ -80,9 +80,10 @@ class Upload extends Controller
             'mime.default' => '',
             'status.value' => 1,
         ]));
-        if (empty($file['mime'])) $file['mime'] = Storage::mime($file['xext']);
+        $mime = $file->getAttr('mime');
+        if (empty($mime)) $file->setAttr('mime', Storage::mime($file->getAttr('xext')));
         $info = Storage::instance($data['uptype'])->info($data['key'], $safe, $name);
-        if (is_array($info) && isset($info['url']) && isset($info['key'])) {
+        if (isset($info['url']) && isset($info['key'])) {
             $file->save(['xurl' => $info['url'], 'isfast' => 1, 'issafe' => $data['safe']]);
             $extr = ['id' => $file->id ?? 0, 'url' => $info['url'], 'key' => $info['key']];
             $this->success('文件已经上传', array_merge($data, $extr), 200);
@@ -110,7 +111,7 @@ class Upload extends Controller
             $data['q-sign-algorithm'] = $token['q-sign-algorithm'];
             $data['server'] = TxcosStorage::instance()->upload();
         } elseif ('upyun' === $data['uptype']) {
-            $token = UpyunStorage::instance()->buildUploadToken($data['key'], 3600, $name, input('size'), input('hash'));
+            $token = UpyunStorage::instance()->buildUploadToken($data['key'], 3600, $name, input('hash', ''));
             $data['url'] = $token['siteurl'];
             $data['policy'] = $token['policy'];
             $data['authorization'] = $token['authorization'];
