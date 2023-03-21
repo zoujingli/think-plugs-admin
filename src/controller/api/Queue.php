@@ -68,7 +68,7 @@ class Queue extends Controller
                 sysoplog('系统运维管理', '尝试启动任务监听服务');
                 $this->success('任务监听服务启动成功！');
             } elseif (stripos($message, 'daemons already exist for pid')) {
-                $this->success('任务监听服务已经存在！');
+                $this->success('任务监听服务已经启动！');
             } else {
                 $this->error(nl2br($message));
             }
