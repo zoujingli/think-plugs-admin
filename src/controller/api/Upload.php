@@ -280,7 +280,9 @@ class Upload extends Controller
         $unid = AdminService::withUploadUnid();
         if (empty($uuid) && empty($unid)) {
             $this->error('未登录，禁止使用文件上传！');
-        } else return [$uuid, $unid];
+        } else {
+            return [$uuid, $unid];
+        }
     }
 
     /**
