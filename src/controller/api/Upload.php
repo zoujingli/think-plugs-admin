@@ -167,7 +167,7 @@ class Upload extends Controller
      */
     public function file()
     {
-        [$uuid, $unid] = $this->initUnid();
+        $this->initUnid();
         // 开始处理文件上传
         $file = $this->getFile();
         $extension = strtolower($file->getOriginalExtension());
