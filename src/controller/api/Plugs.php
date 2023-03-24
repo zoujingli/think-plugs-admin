@@ -22,7 +22,7 @@ use think\Response;
 
 /**
  * 扩展插件管理
- * Class Plugs
+ * @class Plugs
  * @package app\admin\controller\api
  */
 class Plugs extends Controller
@@ -42,17 +42,17 @@ class Plugs extends Controller
     /**
      * 前端脚本变量
      * @return \think\Response
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\admin\Exception
      */
     public function script(): Response
     {
+        $token = $this->request->get('uptoken', '');
+        $domain = boolval(AdminService::withUploadUnid($token));
         return response(join("\r\n", [
             sprintf("window.taDebug = %s;", $this->app->isDebug() ? 'true' : 'false'),
-            sprintf("window.taAdmin = '%s';", sysuri('admin/index/index', [], false)),
+            sprintf("window.taAdmin = '%s';", sysuri('admin/index/index', [], false, $domain)),
             sprintf("window.taEditor = '%s';", sysconf('base.editor|raw') ?: 'ckeditor4'),
-        ]))->contentType('application/x-javascript');
+        ]))->contentType('application/javascript');
     }
 
     /**

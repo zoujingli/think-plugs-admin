@@ -37,13 +37,14 @@ class InstallAdmin20230325 extends Migrator
      */
     private function _upgrade_system_file()
     {
-
         // 当前数据表
         $table = 'system_file';
         // 检查与更新数据表
-        if (!$this->table($table)->hasColumn('unid')) $this->table($table)
-            ->addColumn('unid', 'integer', ['limit' => 20, 'default' => 0, 'null' => true, 'after' => 'unid', 'comment' => '会员编号'])
+        $this->table($table)->hasColumn('unid') || $this->table($table)
+            ->addColumn('tags', 'string', ['limit' => 50, 'default' => '', 'after' => 'hash', 'comment' => '文件标签'])
+            ->addColumn('unid', 'integer', ['limit' => 20, 'default' => 0, 'null' => true, 'after' => 'uuid', 'comment' => '会员编号'])
             ->addIndex('unid', ['name' => 'idx_system_file_unid'])
-            ->save();
+            ->addIndex('tags', ['name' => 'idx_system_file_tags'])
+            ->update();
     }
 }

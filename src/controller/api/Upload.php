@@ -32,18 +32,15 @@ use think\Response;
 
 /**
  * 文件上传接口
- * Class Upload
+ * @class Upload
  * @package app\admin\controller\api
  */
 class Upload extends Controller
 {
-
     /**
      * 文件上传脚本
      * @return Response
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\admin\Exception
      */
     public function index(): Response
     {
@@ -59,20 +56,18 @@ class Upload extends Controller
 
     /**
      * 文件上传检查
-     * @login true
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function state()
     {
+        [$uuid, $unid] = $this->initUnid();
         [$name, $safe] = [input('name'), $this->getSafe()];
         $data = ['uptype' => $this->getType(), 'safe' => intval($safe), 'key' => input('key')];
         $file = SystemFile::mk()->data($this->_vali([
             'xkey.value'   => $data['key'],
             'type.value'   => $this->getType(),
-            'uuid.value'   => AdminService::getUserId(),
+            'uuid.value'   => $uuid,
+            'unid.value'   => $unid,
             'name.require' => '名称不能为空！',
             'hash.require' => '哈希不能为空！',
             'xext.require' => '后缀不能为空！',
@@ -123,15 +118,16 @@ class Upload extends Controller
 
     /**
      * 更新文件状态
-     * @login true
      * @return void
      */
     public function done()
     {
+        [$uuid, $unid] = $this->initUnid();
         $data = $this->_vali([
             'id.require'   => '编号不能为空！',
             'hash.require' => '哈希不能为空！',
-            'uuid.value'   => AdminService::getUserId(),
+            'uuid.value'   => $uuid,
+            'unid.value'   => $unid,
         ]);
         $file = SystemFile::mk()->where($data)->findOrEmpty();
         if ($file->isEmpty()) $this->error('文件不存在！');
@@ -144,31 +140,29 @@ class Upload extends Controller
 
     /**
      * 文件选择器
-     * @login true
-     * @return void
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
     public function image()
     {
+        [$uuid, $unid] = $this->initUnid();
         SystemFile::mQuery()->layTable(function () {
             $this->title = '文件选择器';
-        }, function (QueryHelper $query) {
-            $query->where(['status' => 2, 'issafe' => 0, 'uuid' => AdminService::getUserId()]);
-            $query->like('name,hash')->in('xext#type')->dateBetween('create_at')->order('id desc');
+        }, function (QueryHelper $query) use ($unid, $uuid) {
+            $query->where(['status' => 2, 'issafe' => 0, 'uuid' => $uuid, 'unid' => $unid]);
+            $query->strict(false)->like('name,hash')->in('xext#type')->dateBetween('create_at')->order('id desc');
         });
     }
 
     /**
      * 文件上传入口
-     * @login true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\admin\Exception
      */
     public function file()
     {
+        [$uuid, $unid] = $this->initUnid();
+        // 开始处理文件上传
         $file = $this->getFile();
         $extension = strtolower($file->getOriginalExtension());
         $saveFileName = input('key') ?: Storage::name($file->getPathname(), $extension, '', 'md5_file');
@@ -226,7 +220,7 @@ class Upload extends Controller
     }
 
     /**
-     * 获取文件上传类型
+     * 获取上传类型
      * @return boolean
      */
     private function getSafe(): bool
@@ -235,11 +229,9 @@ class Upload extends Controller
     }
 
     /**
-     * 获取文件上传方式
+     * 获取上传方式
      * @return string
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\admin\Exception
      */
     private function getType(): string
     {
@@ -252,7 +244,7 @@ class Upload extends Controller
     }
 
     /**
-     * 获取本地文件对象
+     * 获取文件对象
      * @return UploadedFile|void
      */
     private function getFile(): UploadedFile
@@ -270,6 +262,19 @@ class Upload extends Controller
             trace_file($exception);
             $this->error(lang($exception->getMessage()));
         }
+    }
+
+    /**
+     * 初始化用户状态
+     * @return array
+     */
+    private function initUnid(): array
+    {
+        $uuid = AdminService::getUserId();
+        $unid = AdminService::withUploadUnid();
+        if (empty($uuid) && empty($unid)) {
+            $this->error('未登录，禁止使用文件上传！');
+        } else return [$uuid, $unid];
     }
 
     /**
