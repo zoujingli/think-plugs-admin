@@ -45,9 +45,10 @@ class Upload extends Controller
     public function index(): Response
     {
         $data = ['exts' => []];
-        foreach (str2arr(sysconf('storage.allow_exts|raw')) as $ext) {
-            $data['exts'][$ext] = Storage::mime($ext);
-        }
+        [$uuid, $unid, $exts] = $this->initUnid(false);
+        $allows = str2arr(sysconf('storage.allow_exts|raw'));
+        if (empty($uuid) && $unid > 0) $allows = array_intersect($exts, $allows);
+        foreach ($allows as $ext) $data['exts'][$ext] = Storage::mime($ext);
         $template = realpath(__DIR__ . '/../../view/api/upload.js');
         $data['exts'] = json_encode($data['exts'], JSON_UNESCAPED_UNICODE);
         $data['nameType'] = sysconf('storage.name_type|raw') ?: 'xmd5';
@@ -167,7 +168,7 @@ class Upload extends Controller
      */
     public function file()
     {
-        $this->initUnid();
+        [$uuid, $unid, $unexts] = $this->initUnid();
         // 开始处理文件上传
         $file = $this->getFile();
         $extension = strtolower($file->getOriginalExtension());
@@ -183,6 +184,10 @@ class Upload extends Controller
         // 屏蔽禁止上传指定后缀的文件
         if (!in_array($extension, str2arr(sysconf('storage.allow_exts|raw')))) {
             $this->error('文件类型受限，请在后台配置规则！');
+        }
+        // 前端用户上传后缀检查处理
+        if (empty($uuid) && $unid > 0 && !in_array($extension, $unexts)) {
+            $this->error('文件类型受限，请上传允许的文件类型！');
         }
         if (in_array($extension, ['sh', 'asp', 'bat', 'cmd', 'exe', 'php'])) {
             $this->error('文件安全保护，禁止上传可执行文件！');
@@ -272,16 +277,17 @@ class Upload extends Controller
 
     /**
      * 初始化用户状态
+     * @param boolean $check
      * @return array
      */
-    private function initUnid(): array
+    private function initUnid(bool $check = true): array
     {
         $uuid = AdminService::getUserId();
-        $unid = AdminService::withUploadUnid();
-        if (empty($uuid) && empty($unid)) {
+        [$unid, $exts] = AdminService::withUploadUnid();
+        if ($check && empty($uuid) && empty($unid)) {
             $this->error('未登录，禁止使用文件上传！');
         } else {
-            return [$uuid, $unid];
+            return [$uuid, $unid, $exts];
         }
     }
 
