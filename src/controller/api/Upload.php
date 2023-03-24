@@ -150,8 +150,14 @@ class Upload extends Controller
         SystemFile::mQuery()->layTable(function () {
             $this->title = '文件选择器';
         }, function (QueryHelper $query) use ($unid, $uuid) {
-            $query->where(['status' => 2, 'issafe' => 0, 'uuid' => $uuid, 'unid' => $unid]);
-            $query->strict(false)->like('name,hash')->in('xext#type')->dateBetween('create_at')->order('id desc');
+            if ($unid && $uuid) $query->where(function ($query) use ($uuid, $unid) {
+                /** @var \think\db\Query $query */
+                $query->whereOr([['uuid', '=', $uuid], ['unid', '=', $unid]]);
+            }); else {
+                $query->where($unid ? ['unid' => $unid] : ['uuid' => $uuid]);
+            }
+            $query->where(['status' => 2, 'issafe' => 0])->in('xext#type');
+            $query->like('name,hash')->dateBetween('create_at')->order('id desc');
         });
     }
 
