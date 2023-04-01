@@ -21,17 +21,21 @@
     "zoujingli/think-plugs-static": "^1.0||dev-master"
   },
   "extra": {
+    "think": {
+      "services": [
+        "app\\admin\\Service"
+      ]
+    },
+    "config": {
+      "type": "module",
+      "name": "后台管理模块"
+    },
     "plugin": {
       "copy": {
         "src": "!app/admin",
         "stc/database": "database/migrations"
       },
       "clear": true
-    },
-    "think": {
-      "services": [
-        "app\\admin\\Service"
-      ]
     }
   },
   "minimum-stability": "dev",
