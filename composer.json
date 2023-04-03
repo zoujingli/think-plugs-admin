@@ -28,7 +28,7 @@
     },
     "config": {
       "type": "module",
-      "name": "后台管理模块"
+      "name": "系统后台管理"
     },
     "plugin": {
       "copy": {
