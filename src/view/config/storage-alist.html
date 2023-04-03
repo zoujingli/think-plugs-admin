@@ -33,18 +33,18 @@
                 <b class="color-green">访问域名</b><br><span class="nowrap color-desc">Domain</span>
             </label>
             <div class="layui-input-block">
-                <input id="storage.alist_http_domain" type="text" name="storage.alist_http_domain" value="{:sysconf('storage.alist_http_domain')}" required vali-name="访问域名" placeholder="请输入 Alist 存储 Domain (访问域名)" class="layui-input">
-                <p class="help-block">请填写 Alist 存储访问域名，如：alist.thinkadmin.top</p>
+                <input id="storage.alist_http_domain" type="text" name="storage.alist_http_domain" value="{:sysconf('storage.alist_http_domain')}" required vali-name="访问域名" placeholder="请输入 Alist 存储的访问域名" class="layui-input">
+                <p class="help-block">请填写 Alist 存储访问域名，如：storage.thinkadmin.top</p>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label" for="storage.alist_path">
-                <b class="color-green">存储路径</b><br><span class="nowrap color-desc">Directory</span>
+                <b class="color-green">存储目录</b><br><span class="nowrap color-desc">Directory</span>
             </label>
             <div class="layui-input-block">
-                <input id="storage.alist_path" type="text" name="storage.alist_path" value="{:sysconf('storage.alist_path')}" required vali-name="存储路径" placeholder="请输入 Alist 存储 Directory (存储路径)" class="layui-input">
-                <p class="help-block">请填写 Alist 存储目录名称，如：/uploads/（目录需要有读取和写入权限）</p>
+                <input id="storage.alist_path" type="text" name="storage.alist_path" value="{:sysconf('storage.alist_path')}" required vali-name="存储目录" placeholder="请输入 Alist 存储存储目录" class="layui-input">
+                <p class="help-block">请填写 Alist 存储目录 ( 如：/uploads )，填写 / 表示根目录（ 需要拥有读写权限 ）</p>
             </div>
         </div>
 
@@ -54,7 +54,7 @@
             </label>
             <div class="layui-input-block">
                 <input id="storage.alist_username" name="storage.alist_username" value="{:sysconf('storage.alist_username')}" maxlength="100" required vali-name="用户账号" placeholder="请输入 Alist 存储的用户账号" class="layui-input">
-                <p class="help-block">请输入 Alist 用户账号，注意此账号需要拥有上面存储目录的访问权限。</p>
+                <p class="help-block">请填写 Alist 用户账号，注意此账号需要拥有上面存储目录的访问权限。</p>
             </div>
         </div>
 
@@ -64,7 +64,7 @@
             </label>
             <div class="layui-input-block">
                 <input id="storage.alist_password" name="storage.alist_password" value="{:sysconf('storage.alist_password')}" maxlength="100" required vali-name="用户密码" placeholder="请输入 Alist 存储的用户密码" class="layui-input">
-                <p class="help-block">请输入 Alist 用户登录密码，用于生成文件上传的接口认证令牌。</p>
+                <p class="help-block">请填写 Alist 用户登录密码，用于生成文件上传的接口认证令牌，如果填写错误将无法上传文件。</p>
             </div>
         </div>
 
