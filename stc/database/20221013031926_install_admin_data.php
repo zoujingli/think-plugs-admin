@@ -51,7 +51,7 @@ class InstallAdminData extends Migrator
             'username' => 'admin',
             'nickname' => '超级管理员',
             'password' => '21232f297a57a5a743894a0e4a801fc3',
-            'headimg'  => 'https://thinkadmin.top/static/img/icon.png',
+            'headimg'  => 'https://doc.thinkadmin.top/static/img/icon.png',
         ]);
     }
 
