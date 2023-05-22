@@ -17,7 +17,7 @@
     "topthink/think-view": "^1.0",
     "zoujingli/ip2region": "^1.0||^2.0",
     "zoujingli/think-install": "^1.0||dev-master",
-    "zoujingli/think-library": "^6.1||v6.0.x-dev",
+    "zoujingli/think-library": "^6.1.36||v6.0.x-dev",
     "zoujingli/think-plugs-static": "^1.0||dev-master"
   },
   "extra": {
