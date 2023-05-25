@@ -51,7 +51,7 @@ class InstallAdminData extends Migrator
             'username' => 'admin',
             'nickname' => '超级管理员',
             'password' => '21232f297a57a5a743894a0e4a801fc3',
-            'headimg'  => 'https://doc.thinkadmin.top/static/img/icon.png',
+            'headimg'  => 'https://doc.thinkadmin.top/static/img/head.png',
         ]);
     }
 
@@ -67,8 +67,8 @@ class InstallAdminData extends Migrator
             ['type' => 'base', 'name' => 'app_version', 'value' => 'v6'],
             ['type' => 'base', 'name' => 'editor', 'value' => 'ckeditor5'],
             ['type' => 'base', 'name' => 'login_name', 'value' => '系统管理'],
-            ['type' => 'base', 'name' => 'site_copy', 'value' => '©版权所有 2014-' . date('Y') . ' ThinkAdmin.Top'],
-            ['type' => 'base', 'name' => 'site_icon', 'value' => 'https://v6.thinkadmin.top/upload/4b/5a423974e447d5502023f553ed370f.png'],
+            ['type' => 'base', 'name' => 'site_copy', 'value' => '©版权所有 2014-' . date('Y') . ' ThinkAdmin'],
+            ['type' => 'base', 'name' => 'site_icon', 'value' => 'https://doc.thinkadmin.top/static/img/logo.png'],
             ['type' => 'base', 'name' => 'site_name', 'value' => 'ThinkAdmin'],
             ['type' => 'base', 'name' => 'site_theme', 'value' => 'default'],
             ['type' => 'storage', 'name' => 'allow_exts', 'value' => 'doc,gif,ico,jpg,mp3,mp4,p12,pem,png,zip,rar,xls,xlsx'],
