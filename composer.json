@@ -13,12 +13,12 @@
   "require": {
     "php": ">=7.1",
     "ext-json": "*",
-    "topthink/framework": "^6.0",
-    "topthink/think-view": "^1.0",
-    "zoujingli/ip2region": "^1.0 | ^2.0",
-    "zoujingli/think-install": "^1.0 | dev-master",
-    "zoujingli/think-library": "^6.1.38 | v6.0.x-dev",
-    "zoujingli/think-plugs-static": "^1.0 | dev-master"
+    "topthink/framework": "^6.0|^8.0",
+    "topthink/think-view": "^1.0|^2.0",
+    "zoujingli/ip2region": "^1.0|^2.0",
+    "zoujingli/think-install": "^1.0|dev-master",
+    "zoujingli/think-library": "^6.1.38|v6.0.x-dev",
+    "zoujingli/think-plugs-static": "^1.0|dev-master"
   },
   "extra": {
     "think": {
