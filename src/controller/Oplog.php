@@ -58,7 +58,11 @@ class Oplog extends Controller
     {
         $region = new Ip2Region();
         foreach ($data as &$vo) {
-            $vo['geoisp'] = $region->simple($vo['geoip']);
+            try {
+                $vo['geoisp'] = $region->simple($vo['geoip']);
+            } catch (\Exception $exception) {
+                $vo['geoip'] = $exception->getMessage();
+            }
         }
     }
 
