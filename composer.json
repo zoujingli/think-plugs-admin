@@ -28,7 +28,9 @@
     },
     "config": {
       "type": "module",
-      "name": "系统后台管理"
+      "name": "系统配置管理",
+      "homepage": "https://thinkadmin.top",
+      "document": "https://thinkadmin.top/plugin/think-plugs-admin.html"
     },
     "plugin": {
       "copy": {
