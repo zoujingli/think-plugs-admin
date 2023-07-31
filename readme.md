@@ -18,6 +18,10 @@
 
 如果不希望自有的 `app/admin` 目录被更新替换，可以在 `app/admin` 目录下创建 `ignore` 文件（ 如 `app/admin/ignore`，注意文件名没有后缀哦！），即使执行了插件安装或更新都会忽略更新替换。
 
+### 插件文档
+
+https://thinkadmin.top/plugin/think-plugs-admin.html
+
 ### 安装插件
 
 ```shell
