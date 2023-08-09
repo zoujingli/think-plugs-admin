@@ -5,8 +5,8 @@
 [![Total Downloads](https://poser.pugx.org/zoujingli/think-plugs-admin/downloads)](https://packagist.org/packages/zoujingli/think-plugs-admin)
 [![Monthly Downloads](https://poser.pugx.org/zoujingli/think-plugs-admin/d/monthly)](https://packagist.org/packages/zoujingli/think-plugs-admin)
 [![Daily Downloads](https://poser.pugx.org/zoujingli/think-plugs-admin/d/daily)](https://packagist.org/packages/zoujingli/think-plugs-admin)
-[![PHP Version](https://doc.thinkadmin.top/static/icon/php-7.1.svg)](https://thinkadmin.top)
-[![License](https://doc.thinkadmin.top/static/icon/license-mit.svg)](https://mit-license.org)
+[![PHP Version](https://thinkadmin.top/static/icon/php-7.1.svg)](https://thinkadmin.top)
+[![License](https://thinkadmin.top/static/icon/license-mit.svg)](https://mit-license.org)
 
 **ThinkAdmin** 核心插件，后台基础管理模块，开源免费可商用！
 
@@ -50,7 +50,7 @@ composer remove zoujingli/think-plugs-admin
 * 数据字典管理：`admin/base/index`
 * 系统文件管理：`admin/file/index`
 * 系统菜单管理：`admin/menu/index`
-* 访问权限管理：`admin/auth/index`
+* 系统权限管理：`admin/auth/index`
 * 系统用户管理：`admin/user/index`
 
 ### 插件数据库
