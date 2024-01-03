@@ -8,7 +8,7 @@
 [![PHP Version](https://thinkadmin.top/static/icon/php-7.1.svg)](https://thinkadmin.top)
 [![License](https://thinkadmin.top/static/icon/license-mit.svg)](https://mit-license.org)
 
-**ThinkAdmin** 核心插件，后台基础管理模块，开源免费可商用！
+**ThinkAdmin** 核心插件，后台基础管理模块，基于 MIT 协议开源免费可商用！
 
 代码主仓库放在 **Gitee**，**Github** 仅为镜像仓库用于发布 **Composer** 包。
 
@@ -74,4 +74,4 @@ composer remove zoujingli/think-plugs-admin
 
 本项目包含的第三方源码和二进制文件的版权信息将另行标注，请在对应文件查看。
 
-版权所有 Copyright © 2014-2023 by ThinkAdmin (https://thinkadmin.top) All rights reserved。
+版权所有 Copyright © 2014-2024 by ThinkAdmin (https://thinkadmin.top) All rights reserved。
