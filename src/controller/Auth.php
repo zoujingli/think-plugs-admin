@@ -90,7 +90,6 @@ class Auth extends Controller
     /**
      * 表单后置数据处理
      * @param array $data
-     * @throws \ReflectionException
      */
     protected function _form_filter(array $data)
     {
