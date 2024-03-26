@@ -266,7 +266,7 @@ class Upload extends Controller
     private function getType(): string
     {
         $type = strtolower(input('uptype', ''));
-        if (in_array($type, ['local', 'qiniu', 'alioss', 'txcos', 'uptype'])) {
+        if (in_array($type, array_keys(Storage::types()))) {
             return $type;
         } else {
             return strtolower(sysconf('storage.type|raw'));
@@ -284,7 +284,7 @@ class Upload extends Controller
             if ($file instanceof UploadedFile) {
                 return $file;
             } else {
-                $this->error('未获取到上传的文件对象！');
+                $this->error('读取临时文件失败！');
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
