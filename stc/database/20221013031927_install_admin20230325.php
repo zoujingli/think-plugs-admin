@@ -32,8 +32,8 @@ class InstallAdmin20230325 extends Migrator
         $this->table($table)->hasColumn('unid') || $this->table($table)
             ->addColumn('tags', 'string', ['limit' => 50, 'default' => '', 'null' => true, 'after' => 'hash', 'comment' => '文件标签'])
             ->addColumn('unid', 'integer', ['limit' => 11, 'default' => 0, 'null' => true, 'after' => 'uuid', 'comment' => '会员编号'])
-            ->addIndex('unid', ['name' => 'idx_system_file_unid'])
-            ->addIndex('tags', ['name' => 'idx_system_file_tags'])
+            ->addIndex('uuid', ['name' => 'i738a363ca_uuid'])
+            ->addIndex('tags', ['name' => 'i738a363ca_tags'])
             ->update();
     }
 }

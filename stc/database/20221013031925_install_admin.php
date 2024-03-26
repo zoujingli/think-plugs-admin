@@ -63,9 +63,9 @@ class InstallAdmin extends Migrator
             ->addColumn('sort', 'biginteger', ['limit' => 20, 'default' => 0, 'null' => true, 'comment' => '排序权重'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'null' => true, 'comment' => '权限状态(1使用,0禁用)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'null' => true, 'comment' => '创建时间'])
-            ->addIndex('sort', ['name' => 'idx_system_auth_sort'])
-            ->addIndex('title', ['name' => 'idx_system_auth_title'])
-            ->addIndex('status', ['name' => 'idx_system_auth_status'])
+            ->addIndex('sort', ['name' => 'i73a781d61_sort'])
+            ->addIndex('title', ['name' => 'i73a781d61_title'])
+            ->addIndex('status', ['name' => 'i73a781d61_status'])
             ->create();
 
         // 修改主键长度
@@ -93,8 +93,8 @@ class InstallAdmin extends Migrator
         ])
             ->addColumn('auth', 'biginteger', ['limit' => 20, 'default' => 0, 'null' => true, 'comment' => '角色'])
             ->addColumn('node', 'string', ['limit' => 200, 'default' => '', 'null' => true, 'comment' => '节点'])
-            ->addIndex('auth', ['name' => 'idx_system_auth_node_auth'])
-            ->addIndex('node', ['name' => 'idx_system_auth_node_node'])
+            ->addIndex('auth', ['name' => 'i4cd9aaff6_auth'])
+            ->addIndex('node', ['name' => 'i4cd9aaff6_node'])
             ->create();
 
         // 修改主键长度
@@ -130,12 +130,12 @@ class InstallAdmin extends Migrator
             ->addColumn('deleted_at', 'string', ['limit' => 20, 'default' => '', 'null' => true, 'comment' => '删除时间'])
             ->addColumn('deleted_by', 'biginteger', ['limit' => 20, 'default' => 0, 'null' => true, 'comment' => '删除用户'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'null' => true, 'comment' => '创建时间'])
-            ->addIndex('type', ['name' => 'idx_system_base_type'])
-            ->addIndex('code', ['name' => 'idx_system_base_code'])
-            ->addIndex('name', ['name' => 'idx_system_base_name'])
-            ->addIndex('sort', ['name' => 'idx_system_base_sort'])
-            ->addIndex('status', ['name' => 'idx_system_base_status'])
-            ->addIndex('deleted', ['name' => 'idx_system_base_deleted'])
+            ->addIndex('type', ['name' => 'i2a29c450f_type'])
+            ->addIndex('code', ['name' => 'i2a29c450f_code'])
+            ->addIndex('name', ['name' => 'i2a29c450f_name'])
+            ->addIndex('sort', ['name' => 'i2a29c450f_sort'])
+            ->addIndex('status', ['name' => 'i2a29c450f_status'])
+            ->addIndex('deleted', ['name' => 'i2a29c450f_deleted'])
             ->create();
 
         // 修改主键长度
@@ -164,8 +164,8 @@ class InstallAdmin extends Migrator
             ->addColumn('type', 'string', ['limit' => 20, 'default' => '', 'null' => true, 'comment' => '配置分类'])
             ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'null' => true, 'comment' => '配置名称'])
             ->addColumn('value', 'string', ['limit' => 2048, 'default' => '', 'null' => true, 'comment' => '配置内容'])
-            ->addIndex('type', ['name' => 'idx_system_config_type'])
-            ->addIndex('name', ['name' => 'idx_system_config_name'])
+            ->addIndex('type', ['name' => 'i48e345b98_type'])
+            ->addIndex('name', ['name' => 'i48e345b98_name'])
             ->create();
 
         // 修改主键长度
@@ -195,8 +195,8 @@ class InstallAdmin extends Migrator
             ->addColumn('value', 'text', ['default' => NULL, 'null' => true, 'comment' => '配置值'])
             ->addColumn('create_time', 'datetime', ['default' => NULL, 'null' => true, 'comment' => '创建时间'])
             ->addColumn('update_time', 'datetime', ['default' => NULL, 'null' => true, 'comment' => '更新时间'])
-            ->addIndex('name', ['name' => 'idx_system_data_name'])
-            ->addIndex('create_time', ['name' => 'idx_system_data_create_time'])
+            ->addIndex('name', ['name' => 'icbccedc16_name'])
+            ->addIndex('create_time', ['name' => 'icbccedc16_create_time'])
             ->create();
 
         // 修改主键长度
@@ -238,17 +238,17 @@ class InstallAdmin extends Migrator
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'null' => true, 'comment' => '上传状态(1悬空,2落地)'])
             ->addColumn('create_at', 'datetime', ['default' => NULL, 'null' => true, 'comment' => '创建时间'])
             ->addColumn('update_at', 'datetime', ['default' => NULL, 'null' => true, 'comment' => '更新时间'])
-            ->addIndex('type', ['name' => 'idx_system_file_type'])
-            ->addIndex('hash', ['name' => 'idx_system_file_hash'])
-            ->addIndex('uuid', ['name' => 'idx_system_file_uuid'])
-            ->addIndex('xext', ['name' => 'idx_system_file_xext'])
-            ->addIndex('unid', ['name' => 'idx_system_file_unid'])
-            ->addIndex('tags', ['name' => 'idx_system_file_tags'])
-            ->addIndex('name', ['name' => 'idx_system_file_name'])
-            ->addIndex('status', ['name' => 'idx_system_file_status'])
-            ->addIndex('issafe', ['name' => 'idx_system_file_issafe'])
-            ->addIndex('isfast', ['name' => 'idx_system_file_isfast'])
-            ->addIndex('create_at', ['name' => 'idx_system_file_create_at'])
+            ->addIndex('type', ['name' => 'i738a363ca_type'])
+            ->addIndex('hash', ['name' => 'i738a363ca_hash'])
+            ->addIndex('uuid', ['name' => 'i738a363ca_uuid'])
+            ->addIndex('xext', ['name' => 'i738a363ca_xext'])
+            ->addIndex('unid', ['name' => 'i738a363ca_unid'])
+            ->addIndex('tags', ['name' => 'i738a363ca_tags'])
+            ->addIndex('name', ['name' => 'i738a363ca_name'])
+            ->addIndex('status', ['name' => 'i738a363ca_status'])
+            ->addIndex('issafe', ['name' => 'i738a363ca_issafe'])
+            ->addIndex('isfast', ['name' => 'i738a363ca_isfast'])
+            ->addIndex('create_at', ['name' => 'i738a363ca_create_at'])
             ->create();
 
         // 修改主键长度
@@ -284,9 +284,9 @@ class InstallAdmin extends Migrator
             ->addColumn('sort', 'biginteger', ['limit' => 20, 'default' => 0, 'null' => true, 'comment' => '排序权重'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'null' => true, 'comment' => '状态(0:禁用,1:启用)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'null' => true, 'comment' => '创建时间'])
-            ->addIndex('pid', ['name' => 'idx_system_menu_pid'])
-            ->addIndex('sort', ['name' => 'idx_system_menu_sort'])
-            ->addIndex('status', ['name' => 'idx_system_menu_status'])
+            ->addIndex('pid', ['name' => 'i29b9da675_pid'])
+            ->addIndex('sort', ['name' => 'i29b9da675_sort'])
+            ->addIndex('status', ['name' => 'i29b9da675_status'])
             ->create();
 
         // 修改主键长度
@@ -318,7 +318,7 @@ class InstallAdmin extends Migrator
             ->addColumn('content', 'string', ['limit' => 1024, 'default' => '', 'null' => false, 'comment' => '操作内容描述'])
             ->addColumn('username', 'string', ['limit' => 50, 'default' => '', 'null' => false, 'comment' => '操作人用户名'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'null' => false, 'comment' => '创建时间'])
-            ->addIndex('create_at', ['name' => 'idx_system_oplog_create_at'])
+            ->addIndex('create_at', ['name' => 'id7cb1c775_create_at'])
             ->create();
 
         // 修改主键长度
@@ -359,12 +359,12 @@ class InstallAdmin extends Migrator
             ->addColumn('rscript', 'integer', ['limit' => 1, 'default' => 1, 'null' => true, 'comment' => '任务类型(0单例,1多例)'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'null' => true, 'comment' => '任务状态(1新任务,2处理中,3成功,4失败)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'null' => false, 'comment' => '创建时间'])
-            ->addIndex('code', ['name' => 'idx_system_queue_code'])
-            ->addIndex('title', ['name' => 'idx_system_queue_title'])
-            ->addIndex('status', ['name' => 'idx_system_queue_status'])
-            ->addIndex('rscript', ['name' => 'idx_system_queue_rscript'])
-            ->addIndex('create_at', ['name' => 'idx_system_queue_create_at'])
-            ->addIndex('exec_time', ['name' => 'idx_system_queue_exec_time'])
+            ->addIndex('code', ['name' => 'if64376974_code'])
+            ->addIndex('title', ['name' => 'if64376974_title'])
+            ->addIndex('status', ['name' => 'if64376974_status'])
+            ->addIndex('rscript', ['name' => 'if64376974_rscript'])
+            ->addIndex('create_at', ['name' => 'if64376974_create_at'])
+            ->addIndex('exec_time', ['name' => 'if64376974_exec_time'])
             ->create();
 
         // 修改主键长度
@@ -407,10 +407,10 @@ class InstallAdmin extends Migrator
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'null' => true, 'comment' => '状态(0禁用,1启用)'])
             ->addColumn('is_deleted', 'integer', ['limit' => 1, 'default' => 0, 'null' => true, 'comment' => '删除(1删除,0未删)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'null' => true, 'comment' => '创建时间'])
-            ->addIndex('sort', ['name' => 'idx_system_user_sort'])
-            ->addIndex('status', ['name' => 'idx_system_user_status'])
-            ->addIndex('username', ['name' => 'idx_system_user_username'])
-            ->addIndex('is_deleted', ['name' => 'idx_system_user_is_deleted'])
+            ->addIndex('sort', ['name' => 'i34b957835_sort'])
+            ->addIndex('status', ['name' => 'i34b957835_status'])
+            ->addIndex('username', ['name' => 'i34b957835_username'])
+            ->addIndex('is_deleted', ['name' => 'i34b957835_is_deleted'])
             ->create();
 
         // 修改主键长度
