@@ -8,15 +8,15 @@
 [![PHP Version](https://thinkadmin.top/static/icon/php-7.1.svg)](https://thinkadmin.top)
 [![License](https://thinkadmin.top/static/icon/license-mit.svg)](https://mit-license.org)
 
-**ThinkAdmin** 核心插件，后台基础管理模块，基于 MIT 协议开源免费可商用！
+**ThinkPlugsAdmin** 是 **ThinkAdmin** 的核心插件，提供后台基础管理模块功能，基于 MIT 协议开源，不仅免费，而且可商用！
 
-代码主仓库放在 **Gitee**，**Github** 仅为镜像仓库用于发布 **Composer** 包。
+主要代码仓库位于 **Gitee**，而 **Github** 仅为镜像仓库，专门用于发布 **Composer** 包。
 
-安装此插件会占用并替换 `app/admin` 目录 ( 先删再写 )，若有对 `app/admin` 有修改不建议安装此插件，否则会造成修改的内容丢失！
+请注意，安装此插件将占用并替换 `app/admin` 目录（采用先删除再写入的方式）。若您曾对 `app/admin` 进行了自定义修改，我们不建议您安装此插件，以避免修改内容丢失。
 
-使用 `Composer` 卸载此插件时，不会删除 `app/admin` 目录和对应数据表，需要手动删除目录和数据表。
+当您使用 `Composer` 卸载此插件时，请留意它并不会自动删除 `app/admin` 目录及对应的数据表，这些操作需要您手动完成。
 
-如果不希望自有的 `app/admin` 目录被更新替换，可以在 `app/admin` 目录下创建 `ignore` 文件（ 如 `app/admin/ignore`，注意文件名没有后缀哦！），即使执行了插件安装或更新都会忽略更新替换。
+如果您不希望 `app/admin` 目录被插件更新替换，有一个简单的方法可以避免这一情况：在 `app/admin` 目录下创建一个名为 `ignore` 的文件（例如 `app/admin/ignore`，请确保文件名没有后缀）。这样，即使执行了插件的安装或更新操作，该目录也将被忽略，不会被替换更新。
 
 ### 插件文档
 
