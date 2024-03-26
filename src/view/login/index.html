@@ -10,7 +10,7 @@
 <div class="login-container" {$loginStyle|raw}>
     <div class="header notselect layui-hide-xs">
         <a href="{:url('@')}" class="title">{:sysconf('app_name')}<span>{:sysconf('app_version')}</span></a>
-        {notempty name='developMode'}
+        {notempty name='runtimeMode'}
         <a class="pull-right layui-anim layui-anim-fadein" target="_blank" href='https://gitee.com/zoujingli/ThinkAdmin'>
             <img src='https://gitee.com/zoujingli/ThinkAdmin/widgets/widget_1.svg' alt='Fork me on Gitee'>
         </a>
