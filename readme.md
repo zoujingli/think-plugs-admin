@@ -8,9 +8,9 @@
 [![PHP Version](https://thinkadmin.top/static/icon/php-7.1.svg)](https://thinkadmin.top)
 [![License](https://thinkadmin.top/static/icon/license-mit.svg)](https://mit-license.org)
 
-**ThinkPlugsAdmin** 是 **ThinkAdmin** 的核心插件，提供后台基础管理模块功能，基于 MIT 协议开源，不仅免费，而且可商用！
+**ThinkPlugsAdmin** 是 **ThinkAdmin** 的核心插件，提供后台基础管理模块功能，基于 MIT 协议开源，免费可商用！
 
-主要代码仓库位于 **Gitee**，而 **Github** 仅为镜像仓库，专门用于发布 **Composer** 包。
+我们的主代码仓库位于 Gitee，而 Github 则作为镜像仓库，主要用于发布 Composer 包，方便广大开发者获取和使用。
 
 请注意，安装此插件将占用并替换 `app/admin` 目录（采用先删除再写入的方式）。若您曾对 `app/admin` 进行了自定义修改，我们不建议您安装此插件，以避免修改内容丢失。
 

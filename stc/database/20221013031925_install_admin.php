@@ -24,6 +24,9 @@ use think\migration\Migrator;
  */
 class InstallAdmin extends Migrator
 {
+    /**
+     * 创建数据库
+     */
     public function change()
     {
         $this->_create_system_auth();

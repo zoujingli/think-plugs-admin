@@ -14,15 +14,17 @@
             </label>
             <div class="layui-input-block">
                 {if !sysconf('storage.qiniu_http_protocol')}{php}sysconf('storage.qiniu_http_protocol','http');{/php}{/if}
-                {foreach ['http'=>'HTTP','https'=>'HTTPS','auto'=>"AUTO"] as $protocol=>$remark}
-                <label class="think-radio">
-                    {if sysconf('storage.qiniu_http_protocol') eq $protocol}
-                    <input checked type="radio" name="storage.qiniu_http_protocol" value="{$protocol}" lay-ignore> {$remark}
-                    {else}
-                    <input type="radio" name="storage.qiniu_http_protocol" value="{$protocol}" lay-ignore> {$remark}
-                    {/if}
-                </label>
-                {/foreach}
+                <div class="layui-input help-checks">
+                    {foreach ['http'=>'HTTP','https'=>'HTTPS','auto'=>"AUTO"] as $protocol=>$remark}
+                    <label class="think-radio">
+                        {if sysconf('storage.qiniu_http_protocol') eq $protocol}
+                        <input checked type="radio" name="storage.qiniu_http_protocol" value="{$protocol}" lay-ignore> {$remark}
+                        {else}
+                        <input type="radio" name="storage.qiniu_http_protocol" value="{$protocol}" lay-ignore> {$remark}
+                        {/if}
+                    </label>
+                    {/foreach}
+                </div>
                 <p class="help-block">七牛云存储访问协议，其中 HTTPS 需要配置证书才能使用（ AUTO 为相对协议 ）</p>
             </div>
         </div>
@@ -60,7 +62,7 @@
             </label>
             <div class="layui-input-block">
                 <input id="storage.qiniu_http_domain" type="text" name="storage.qiniu_http_domain" value="{:sysconf('storage.qiniu_http_domain')}" required vali-name="访问域名" placeholder="请输入七牛云存储 Domain (访问域名)" class="layui-input">
-                <p class="help-block">填写七牛云存储访问域名，如：static.qiniu.thinkadmin.top</p>
+                <p class="help-block">填写七牛云存储访问域名，不需要填写访问协议，如：static.qiniu.thinkadmin.top</p>
             </div>
         </div>
 

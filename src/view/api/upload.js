@@ -20,9 +20,11 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
             this.option.cutHeight = parseInt(this.option.elem.data('cut-height') || '0');
 
             /*! 查找表单元素, 如果没有找到将不会自动写值 */
-            if (!this.option.elem.data('input') && this.option.elem.data('field')) {
-                this.$input = $('input[name="' + this.option.elem.data('field') + '"]:not([type=file])');
-                this.option.elem.data('input', this.$input.size() > 0 ? this.$input.get(0) : null);
+            if (this.option.elem.data('input')) {
+                this.option.input = $(this.option.elem.data('input'))
+            } else if (this.option.elem.data('field')) {
+                this.option.input = $('input[name="' + this.option.elem.data('field') + '"]:not([type=file])');
+                this.option.elem.data('input', this.option.input.size() > 0 ? this.option.input.get(0) : null);
             }
 
             /*! 文件选择筛选，使用 MIME 规则过滤文件列表 */
@@ -188,7 +190,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                     });
                 } else if (parseInt(ret.code) === 200) {
                     (file.xurl = ret.data.url), that.progress('100.00', file);
-                    that.done({code: 1, url: file.xurl, info: file.xstats, data: {code:200,url: file.xurl}}, file.index, file, done, '{:lang("文件秒传成功！")}');
+                    that.done({code: 1, url: file.xurl, info: file.xstats, data: {code: 200, url: file.xurl}}, file.index, file, done, '{:lang("文件秒传成功！")}');
                 } else {
                     that.event('upload.error', {file: file}, file, ret.info || ret.error.message || '{:lang("文件上传出错！")}');
                 }
@@ -240,6 +242,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
         }
         if (this.option.elem) {
             this.option.elem.triggerHandler(name, data);
+            if (this.option.input) this.option.input.triggerHandler(name, data);
         }
         return this;
     };

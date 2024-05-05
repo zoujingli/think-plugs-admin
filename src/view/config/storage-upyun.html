@@ -14,15 +14,17 @@
             </label>
             <div class="layui-input-block">
                 {if !sysconf('storage.upyun_http_protocol')}{php}sysconf('storage.upyun_http_protocol','http');{/php}{/if}
-                {foreach ['http'=>'HTTP','https'=>'HTTPS','auto'=>"AUTO"] as $protocol=>$remark}
-                <label class="think-radio">
-                    {if sysconf('storage.upyun_http_protocol') eq $protocol}
-                    <input checked type="radio" name="storage.upyun_http_protocol" value="{$protocol}" lay-ignore> {$remark}
-                    {else}
-                    <input type="radio" name="storage.upyun_http_protocol" value="{$protocol}" lay-ignore> {$remark}
-                    {/if}
-                </label>
-                {/foreach}
+                <div class="layui-input help-checks">
+                    {foreach ['http'=>'HTTP','https'=>'HTTPS','auto'=>"AUTO"] as $protocol=>$remark}
+                    <label class="think-radio">
+                        {if sysconf('storage.upyun_http_protocol') eq $protocol}
+                        <input checked type="radio" name="storage.upyun_http_protocol" value="{$protocol}" lay-ignore> {$remark}
+                        {else}
+                        <input type="radio" name="storage.upyun_http_protocol" value="{$protocol}" lay-ignore> {$remark}
+                        {/if}
+                    </label>
+                    {/foreach}
+                </div>
                 <p class="help-block">又拍云存储访问协议，其中 HTTPS 需要配置证书才能使用（AUTO 为相对协议）</p>
             </div>
         </div>
@@ -43,7 +45,7 @@
             </label>
             <div class="layui-input-block">
                 <input id="storage.upyun_http_domain" name="storage.upyun_http_domain" value="{:sysconf('storage.upyun_http_domain')}" required vali-name="访问域名" placeholder="请输入又拍云存储 Domain (访问域名)" class="layui-input">
-                <p class="help-block">填写又拍云存储外部访问域名，如：static.uss.thinkadmin.top</p>
+                <p class="help-block">填写又拍云存储外部访问域名，不需要填写访问协议，如：static.uss.thinkadmin.top</p>
             </div>
         </div>
 
