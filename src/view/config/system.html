@@ -50,10 +50,10 @@
 
         <div class="layui-form-item margin-bottom-5">
             <div class="help-label label-required-prev"><b>浏览器小图标</b>Browser Icon</div>
-            <label class="relative block label-required-null">
-                <input class="layui-input" required pattern="url" vali-name="图标文件" data-tips-image data-tips-hover placeholder="请上传浏览器图标" value="{:sysconf('site_icon')}" name="site_icon">
+            <div class="relative block label-required-null">
+                <label><input class="layui-input" required pattern="url" vali-name="图标文件" data-tips-image data-tips-hover placeholder="请上传浏览器图标" value="{:sysconf('site_icon')}" name="site_icon"></label>
                 <a class="input-right-icon layui-icon layui-icon-upload-drag" data-file="btn" data-type="png,jpg,jpeg" data-field="site_icon"></a>
-            </label>
+            </div>
             <div class="help-block sub-span-blue">
                 建议上传 <span>128x128</span> 或 <span>256x256</span> 的 <span>JPG</span>,<span>PNG</span>,<span>JPEG</span> 图片，保存后会自动生成 <span>48x48</span> 的 <span>ICO</span> 文件 ~
             </div>
