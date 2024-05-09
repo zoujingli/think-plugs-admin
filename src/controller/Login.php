@@ -14,6 +14,8 @@
 // | github 代码仓库：https://github.com/zoujingli/think-plugs-admin
 // +----------------------------------------------------------------------
 
+declare(strict_types=1);
+
 namespace app\admin\controller;
 
 use think\admin\Controller;
@@ -45,11 +47,11 @@ class Login extends Controller
             } else {
                 // 加载登录模板
                 $this->title = '系统登录';
-                // 当前运行模式
-                $this->runtimeMode = RuntimeService::check();
                 // 登录验证令牌
                 $this->captchaType = 'LoginCaptcha';
                 $this->captchaToken = CodeExtend::uuid();
+                // 当前运行模式
+                $this->runtimeMode = RuntimeService::check();
                 // 后台背景处理
                 $images = str2arr(sysconf('login_image|raw') ?: '', '|');
                 if (empty($images)) $images = [

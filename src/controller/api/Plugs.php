@@ -14,6 +14,8 @@
 // | github 代码仓库：https://github.com/zoujingli/think-plugs-admin
 // +----------------------------------------------------------------------
 
+declare(strict_types=1);
+
 namespace app\admin\controller\api;
 
 use think\admin\Controller;

@@ -14,13 +14,14 @@
 // | github 代码仓库：https://github.com/zoujingli/think-plugs-admin
 // +----------------------------------------------------------------------
 
+declare(strict_types=1);
+
 namespace app\admin\controller\api;
 
 use Psr\Log\NullLogger;
 use think\admin\Controller;
 use think\admin\model\SystemQueue;
 use think\admin\service\AdminService;
-use think\admin\service\QueueService;
 use think\exception\HttpResponseException;
 
 /**

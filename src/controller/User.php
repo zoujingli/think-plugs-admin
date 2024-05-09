@@ -98,6 +98,10 @@ class User extends Controller
             ]);
             $user = SystemUser::mk()->findOrEmpty($data['id']);
             if ($user->isExists() && $user->save(['password' => md5($data['password'])])) {
+                // 修改密码同步事件处理
+                $this->app->event->trigger('PluginAdminChangePassword', [
+                    'uuid' => $data['id'], 'pass' => $data['password']
+                ]);
                 sysoplog('系统用户管理', "修改用户[{$data['id']}]密码成功");
                 $this->success('密码修改成功，请使用新密码登录！', '');
             } else {
