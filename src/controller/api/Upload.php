@@ -147,7 +147,7 @@ class Upload extends Controller
                 $alist = AlistStorage::instance();
                 $data['url'] = $alist->url($data['key']);
                 $data['server'] = $alist->upload();
-                $data['filepath'] = $alist->real($data['key'], true);
+                $data['filepath'] = $alist->real($data['key']);
                 $data['authorization'] = $alist->token();
             } else {
                 $this->error('未知的存储引擎！');
