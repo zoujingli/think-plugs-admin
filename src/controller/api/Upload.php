@@ -331,6 +331,7 @@ class Upload extends Controller
         $bins = hex2bin($hexs);
         /* 匹配十六进制中的 <% ( ) %> 或 <? ( ) ?> 或 <script | /script> */
         foreach (['<?php ', '<% ', '<script '] as $key) if (stripos($bins, $key) !== false) return true;
-        return preg_match("/(3c25.*?28.*?29.*?253e)|(3c3f.*?28.*?29.*?3f3e)|(3C534352495054)|(2F5343524950543E)|(3C736372697074)|(2F7363726970743E)/is", $hexs);
+        $result = preg_match("/(3c25.*?28.*?29.*?253e)|(3c3f.*?28.*?29.*?3f3e)|(3C534352495054)|(2F5343524950543E)|(3C736372697074)|(2F7363726970743E)/is", $hexs);
+        return $result === false || $result > 0;
     }
 }
