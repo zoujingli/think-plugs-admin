@@ -95,9 +95,9 @@ class Login extends Controller
             $user->hidden(['sort', 'status', 'password', 'is_deleted']);
             $this->app->session->set('user', $user->toArray());
             $this->app->session->delete('LoginInputSessionError');
-            $user->inc('login_num')->save([
-                'login_at' => date('Y-m-d H:i:s'),
-                'login_ip' => $this->app->request->ip(),
+            // 更新登录次数
+            SystemUser::mk()->where(['id' => $user->getAttr('id')])->inc('login_num')->update([
+                'login_at' => date('Y-m-d H:i:s'), 'login_ip' => $this->app->request->ip(),
             ]);
             // 刷新用户权限
             AdminService::apply(true);
