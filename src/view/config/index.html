@@ -43,8 +43,8 @@
     </div>
     <div class="layui-card-body layui-clear">
         <div class="layui-btn-group shadow-mini">
-            {if !in_array(sysconf('base.editor'),['ckeditor4','ckeditor5','auto'])}{php}sysconf('base.editor','ckeditor4');{/php}{/if}
-            {foreach ['ckeditor4'=>'CKEditor4','ckeditor5'=>'CKEditor5','auto'=>lang('自适应模式')] as $k => $v}{if sysconf('base.editor') eq $k}
+            {if !in_array(sysconf('base.editor'),['ckeditor4','ckeditor5','wangEditor','auto'])}{php}sysconf('base.editor','ckeditor4');{/php}{/if}
+            {foreach ['ckeditor4'=>'CKEditor4','ckeditor5'=>'CKEditor5','wangEditor'=>'wangEditor','auto'=>lang('自适应模式')] as $k => $v}{if sysconf('base.editor') eq $k}
             {if auth('storage')}<a data-title="配置{$v}" class="layui-btn layui-btn-sm layui-btn-active">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-active">{$v}</a>{/if}
             {else}
             {if auth('storage')}<a data-title="配置{$v}" data-action="{:url('admin/api.system/editor')}" data-value="editor#{$k}" class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{/if}
@@ -53,6 +53,7 @@
         <div class="margin-top-20 full-width pull-left">
             <p><b>CKEditor4</b>：{:lang('旧版本编辑器，对浏览器兼容较好，但内容编辑体验稍有不足。')}</p>
             <p><b>CKEditor5</b>：{:lang('新版本编辑器，只支持新特性浏览器，对内容编辑体验较好，推荐使用。')}</p>
+            <p><b>wangEditor</b>：{:lang('国产优质富文本编辑器，对于小程序及App内容支持会更友好，推荐使用。')}</p>
             <p><b>{:lang('自适应模式')}</b>：{:lang('优先使用新版本编辑器，若浏览器不支持新版本时自动降级为旧版本编辑器。')}</p>
         </div>
     </div>

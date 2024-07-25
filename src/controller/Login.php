@@ -96,7 +96,7 @@ class Login extends Controller
             $this->app->session->set('user', $user->toArray());
             $this->app->session->delete('LoginInputSessionError');
             // 更新登录次数
-            SystemUser::mk()->where(['id' => $user->getAttr('id')])->inc('login_num')->update([
+            $user->where(['id' => $user->getAttr('id')])->inc('login_num')->update([
                 'login_at' => date('Y-m-d H:i:s'), 'login_ip' => $this->app->request->ip(),
             ]);
             // 刷新用户权限
